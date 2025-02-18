@@ -15,7 +15,8 @@
       approvedBy : "",
       isBillable : true,
       dueDate : "",
-      assignedTo: ""
+      assignedTo: "",
+      releaseDate : ""
     });
 
     const handleChange = (fieldName,value) => {
@@ -66,8 +67,9 @@
         <Form.Item label="Status">
           <Select value={details.status} onChange={(value)=>handleChange("status",value)}>
             <Select.Option value="Not Started">Not Started</Select.Option>
-            <Select.Option value="OnGoing">On Going</Select.Option>
+            <Select.Option value="On Going">On Going</Select.Option>
             <Select.Option value="Completed">Completed</Select.Option>
+            <Select.Option value="on Hold">on Hold</Select.Option>
           </Select>
         </Form.Item>
 
@@ -131,6 +133,10 @@
 
         <Form.Item label="Assigned To" name ="assignedTo">
           <Input value={details.assignedTo} name="assignedTo" placeholder="Enter Assigned Person Name" onChange={(value)=>handleChange("assignedTo",value)}/>
+        </Form.Item>
+
+        <Form.Item label="Due Date">
+          <DatePicker value={details.releaseDate? moment(details.releaseDate) : null} onChange={(date,dateString)=>handleChange("releaseDate",dateString)} format="YYYY-MM-DD"/>
         </Form.Item>
 
         <Form.Item>
