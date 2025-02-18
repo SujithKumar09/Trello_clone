@@ -3,6 +3,8 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Button, Flex, Input, Modal} from 'antd';
 import DetailedForm from "./DetailedForm";
 import "./Header.css";
+
+
 const Header = () =>{
     // const [search,setSearch]=useState('');
     const [isModalOpen,setisModalOpen]=useState(false);
@@ -11,12 +13,13 @@ const Header = () =>{
     
     const handleFormData = (data) => {
       setFormData(data);
-      console.log("Form Data from Child:", data);
       setisModalOpen(false);
-      sendDataToBackend();
+      console.log(data);
+      sendDataToBackend(data);
     };
 
     const sendDataToBackend=()=>{
+      console.log(formData);
         if (formData) {
           fetch("http://localhost:8080/api/addtask", {
             method: "POST",
