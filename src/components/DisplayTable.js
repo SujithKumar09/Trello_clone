@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { Table, Tag } from "antd";
+import { Table, Tag, Button, Popconfirm, Flex} from "antd";
+import { DeleteOutlined ,EditOutlined} from "@ant-design/icons";
 
-const DisplayTable=()=>{
+const DisplayTable=(props)=>{
     const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
@@ -9,9 +10,26 @@ const DisplayTable=()=>{
             .then((response) => response.json())
             .then((data) => setTasks(data))
             .catch((error) => console.error('Error fetching data:', error));
-    }, []);
+    },[]);
 
-    console.log(tasks);
+    const handleEdit=(record)=>{
+      props.onFormSubmit(record);
+    }
+
+    const handleDelete=(id)=>{
+      fetch('http://localhost:8080/api/deleteTask/'+id,{
+        method:"DELETE",
+        headers:{
+          "Content-Type":"application/json"
+        }
+
+      })
+      .then((response)=>{
+        if(response.status===204)console.log("Task deleted successfully");
+        else console.log("Failed to delete the task");
+      })
+      .catch((error)=>console.error("error deleting data",error));
+    }
 
     const columns = [
         {
@@ -30,11 +48,11 @@ const DisplayTable=()=>{
             key: 'status',
             render: (status) => {
                 let color = 'green'; 
-                if (status === 'on going') {
+                if (status === 'On Going') {
                 color = 'orange';
-                } else if (status === 'on hold') {
+                } else if (status === 'On Hold') {
                 color = 'geekblue';
-                } else if (status === 'not started') {
+                } else if (status === 'Not Started') {
                 color = 'red';
                 }
                 return (
@@ -93,10 +111,30 @@ const DisplayTable=()=>{
           key: 'releaseDate',
           render: (text) => new Date(text).toLocaleDateString(),
         },
+        {
+          title: 'Action',
+          key: 'Action',
+          render: (_, record) => (
+            <Flex gap="small">
+              <Button
+                icon={<EditOutlined />}
+                onClick={() => handleEdit(record)}
+              />
+              <Popconfirm
+                title="Are you sure delete this task?"
+                onConfirm={() => handleDelete(record.id)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button icon={<DeleteOutlined />} danger />
+              </Popconfirm>
+            </Flex>
+          ),
+        },
       ];
 
     return(
-        <Table columns={columns} dataSource={tasks}/>
+        <Table columns={columns} dataSource={tasks} rowKey="id"/>
     );    
 }
 
