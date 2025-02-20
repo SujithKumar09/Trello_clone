@@ -14,26 +14,39 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
     bp: "",
     devHours: 0,
     qaHours: 0,
-    isBillable: true,
+    approvedBy: "",
+    isBillable: false ,
     dueDate: "",
     assignedTo: "",
+    releaseDate: "",
   });
 
   useEffect(() => {
     if (editingTask) {
       setDetails({
         ...editingTask,
-        dueDate: editingTask.dueDate ? moment(editingTask.dueDate) : null, // Convert dueDate to moment object
+        dueDate: editingTask.dueDate ? moment(editingTask.dueDate) : null, 
+      releaseDate: editingTask.releaseDate ? moment(editingTask.releaseDate) : null,// Convert dueDate to moment object
       });
     }
   }, [editingTask]);
 
-  const handleChange = (field, value) => {
-    setDetails((prev) => ({ ...prev, [field]: value }));
+  // const handleChange = (field, value) => {
+  //   setDetails((prev) => ({ ...prev, [field]: value }));
+  // };
+  const handleChange = (key, value) => {
+    // console.log("Before update:", key, "=", value);
+    setDetails((prev) => ({
+      ...prev,
+      [key]: value, // Directly set value
+    }));
+    // console.log("After update:", key, "=", value);
   };
+  
+
 
   const handleSubmit = () => {
-    onFormSubmit({ ...details, dueDate: details.dueDate ? details.dueDate.format("YYYY-MM-DD") : null });
+    onFormSubmit({ ...details,releaseDate: details.releaseDate ? details.releaseDate.format("YYYY-MM-DD") : null ,dueDate: details.dueDate ? details.dueDate.format("YYYY-MM-DD") : null });
   };
 
   return (
@@ -67,11 +80,21 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
         <InputNumber min={0} value={details.qaHours} onChange={(value) => handleChange("qaHours", value)} />
       </Form.Item>
 
+      <Form.Item label="ApprovedBy">
+        <Input value={details.approvedBy} onChange={(e) => handleChange("approvedBy", e.target.value)} />
+      </Form.Item>
+
       <Form.Item label="Billable">
-        <Radio.Group value={details.isBillable} onChange={(e) => handleChange("isBillable", e.target.value)}>
-          <Radio value={true}>Yes</Radio>
-          <Radio value={false}>No</Radio>
-        </Radio.Group>
+      <Radio.Group
+  value={details.isBillable} // Ensure value is boolean (true/false)
+  onChange={(e) => handleChange("isBillable", e.target.value)}
+>
+  <Radio value={true}>Yes</Radio>
+  <Radio value={false}>No</Radio>
+</Radio.Group>
+
+
+
       </Form.Item>
 
       <Form.Item label="Due Date">
@@ -81,7 +104,9 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
       <Form.Item label="Assigned To">
         <Input value={details.assignedTo} onChange={(e) => handleChange("assignedTo", e.target.value)} />
       </Form.Item>
-
+      <Form.Item label="Release Date">
+        <DatePicker value={details.releaseDate} onChange={(date) => handleChange("releaseDate", date)} />
+      </Form.Item>
       <Form.Item>
         <Button type="primary" onClick={handleSubmit}>Submit</Button>
       </Form.Item>

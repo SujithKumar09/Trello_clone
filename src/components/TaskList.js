@@ -55,9 +55,21 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
     { title: "BP", dataIndex: "bp", key: "bp" },
     { title: "Dev Hours", dataIndex: "devHours", key: "devHours" },
     { title: "QA Hours", dataIndex: "qaHours", key: "qaHours" },
-    { title: "Billable", dataIndex: "billableOrNotBillable", key: "billableOrNotBillable", render: (value) => (value ? "Yes" : "No") },
+    { title: "Approved By", dataIndex: "approvedBy", key: "approvedBy" },
+    { 
+      title: "Billable", 
+      dataIndex: "isBillable", 
+      key: "isBillable", 
+      render: (value) => {
+        if (value === true) return "Yes";
+        if (value === false) return "No";
+        return "No"; // If null or undefined, display "N/A"
+      }
+    },
+    
     { title: "Due Date", dataIndex: "dueDate", key: "dueDate" },
     { title: "Assigned To", dataIndex: "assignedTo", key: "assignedTo" },
+    { title: "Release Date", dataIndex: "releaseDate", key: "releaseDate" },
     {
       title: "Actions",
       key: "actions",
