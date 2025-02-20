@@ -55,24 +55,25 @@ const Header = () => {
   return (
     <div>
       <Flex gap="large">
-        <div style={{margin:"auto", marginTop:"5px"}}>
-        <Input className="inputStyle" placeholder="Search" prefix={<SearchOutlined />} style={{width:"400px"}}/>
-        <Button type="primary" size="middle"  style={{marginLeft:"5px"}} onClick={formRender}>
-          ADD
-        </Button>
-        </div>
-        <Modal
-          title="Add New Task"
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
-          footer={null}
-          bodyStyle={{ padding: "10px" }} // Optional: Adjust padding if needed
-        >
-          <div className="modal-form-container">
-            <DetailedForm onFormSubmit={handleFormData} />
+          <div style={{margin:"auto", marginTop:"5px"}}>
+            <Input className="inputStyle" placeholder="Search" prefix={<SearchOutlined />} style={{width:"400px"}}/>
+            <Button type="primary" size="middle"  style={{marginLeft:"5px"}} onClick={formRender}>
+              ADD
+            </Button>
           </div>
-      </Modal>
+           
+          <Modal
+            title="Add New Task"
+            open={isModalOpen}
+            onOk={handleOk}
+            onCancel={handleCancel}
+            footer={null}
+            bodyStyle={{ padding: "10px" }} // Optional: Adjust padding if needed
+          >
+            <div className="modal-form-container">
+              <DetailedForm onFormSubmit={handleFormData} />
+            </div>
+        </Modal>
       </Flex>
     
       <TaskList tasks={tasks} /> {/* Pass tasks to TaskList */}

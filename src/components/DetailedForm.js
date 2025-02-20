@@ -9,14 +9,13 @@
       taskDescription : "",
       status : "Not Started",
       dateCreated : "",
-      bp : "",
+      bP : "",
       devHours : 0,
       qaHours : 0,
       approvedBy : "",
       isBillable : true,
       dueDate : "",
-      assignedTo: "",
-      releaseDate : ""
+      assignedTo: ""
     });
 
     const handleChange = (fieldName,value) => {
@@ -67,9 +66,8 @@
         <Form.Item label="Status">
           <Select value={details.status} onChange={(value)=>handleChange("status",value)}>
             <Select.Option value="Not Started">Not Started</Select.Option>
-            <Select.Option value="On Going">On Going</Select.Option>
+            <Select.Option value="OnGoing">On Going</Select.Option>
             <Select.Option value="Completed">Completed</Select.Option>
-            <Select.Option value="on Hold">on Hold</Select.Option>
           </Select>
         </Form.Item>
 
@@ -82,13 +80,13 @@
           <DatePicker value={details.dateCreated ? moment(details.dateCreated) : null} onChange={(date,dateString)=>handleChange("dateCreated",dateString)} format="YYYY-MM-DD"/>
         </Form.Item>
 
-        <Form.Item label="BP" name ="bp"rules={[
+        <Form.Item label="BP" name ="bP"rules={[
           {
             required: true,
             message: 'Enter name of BP',
           },
         ]}>
-          <Input value={details.bp} name="bp" placeholder="Enter name of BP" onChange={(e)=>handleChange("bp",e.target.value)}/>
+          <Input value={details.bP} name="bP" placeholder="Enter name of BP" onChange={(e)=>handleChange("bP",e.target.value)}/>
         </Form.Item>
 
         <Form.Item label="Dev Hours" name ="devHours">
@@ -105,7 +103,7 @@
             message: ' name of approved person',
           },
         ]}>
-          <Input value={details.approvedBy} name="approvedBy" placeholder="Enter Approved Person Name" onChange={(e)=>handleChange("approvedBy",e.target.value)}/>
+          <Input value={details.approvedBy} name="approvedBy" placeholder="Enter Approved Person Name" onChange={(value)=>handleChange("approvedBy",value)}/>
         </Form.Item>
         
         <Form.Item
@@ -132,11 +130,7 @@
         </Form.Item>
 
         <Form.Item label="Assigned To" name ="assignedTo">
-          <Input value={details.assignedTo} name="assignedTo" placeholder="Enter Assigned Person Name" onChange={(e)=>handleChange("assignedTo",e.target.value)}/>
-        </Form.Item>
-
-        <Form.Item label="Release Date">
-          <DatePicker value={details.releaseDate? moment(details.releaseDate) : null} onChange={(date,dateString)=>handleChange("releaseDate",dateString)} format="YYYY-MM-DD"/>
+          <Input value={details.assignedTo} name="assignedTo" placeholder="Enter Assigned Person Name" onChange={(value)=>handleChange("assignedTo",value)}/>
         </Form.Item>
 
         <Form.Item>
