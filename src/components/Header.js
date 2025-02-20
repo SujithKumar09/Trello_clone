@@ -91,7 +91,20 @@ const Header = () =>{
     }
 
     const formRender=()=>{
-        setFormData({});
+        setFormData({
+          taskName: "",
+          taskDescription: "",
+          status: "Not Started",
+          dateCreated: null,
+          bp: "",
+          devHours: 0,
+          qaHours: 0,
+          approvedBy: "",
+          isBillable: true,
+          dueDate: null,
+          assignedTo: "",
+          releaseDate: null,
+        });
         setisModalOpen(true);
     }
     const handleOk=()=>{
