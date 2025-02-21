@@ -1,7 +1,7 @@
 import { Table, Tag, Button, Popconfirm } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
-
+import "./taskList.css"
 function TaskList({ tasks, onEdit, fetchTasks }) {
   
   const handleDelete = async (taskId) => {

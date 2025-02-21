@@ -1,0 +1,75 @@
+/* Table Container - Full Width */
+.table-container {
+  width: 100%;
+  padding: 10px;
+}
+
+/* Remove Rounded Corners from Table */
+.ant-table {
+  border-radius: 0px !important; /* Removes default border-radius */
+  border: 1px solid #ddd; /* Light border for separation */
+}
+
+/* Table Header Styling */
+.ant-table-thead > tr > th {
+  background: #1890ff !important; /* Blue background */
+  color: white !important; /* White text */
+  font-weight: bold;
+  text-align: center !important;
+  font-size: 13px;
+  padding: 10px !important;
+  border-radius: 0px !important; /* Remove any rounding */
+}
+
+/* Table Content - Striped Rows */
+.ant-table-tbody > tr:nth-child(odd) {
+  background-color: #f9f9f9; /* Light gray for odd rows */
+}
+
+.ant-table-tbody > tr:nth-child(even) {
+  background-color: white; /* White for even rows */
+}
+
+/* Row Hover Effect */
+.ant-table-tbody > tr:hover {
+  background-color: #e6f7ff !important; /* Light blue on hover */
+}
+
+/* Table Cells */
+.ant-table-tbody > tr > td {
+  text-align: center;
+  font-size: 12px;
+  padding: 8px !important;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Remove Extra Borders Around Header */
+.ant-table-thead {
+  border: none !important;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+/* Pagination - Keep Table in View Without Scroll */
+.ant-pagination {
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Prevent Page Scroll */
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Ensure Table Fits in Default Zoom */
+@media screen and (min-width: 1200px) {
+  .ant-table {
+    font-size: 14px;
+  }
+}
