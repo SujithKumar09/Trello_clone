@@ -29,8 +29,6 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
         ...editingTask,
         dueDate: editingTask.dueDate ? moment(editingTask.dueDate) : null, 
       releaseDate: editingTask.releaseDate ? moment(editingTask.releaseDate) : null,// Convert dueDate to moment object
-<<<<<<< HEAD
-=======
       });
     }else {
       setDetails({
@@ -46,7 +44,6 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
         dueDate: null,
         assignedTo: "",
         releaseDate: null,
->>>>>>> dev2
       });
     }
   

@@ -1,12 +1,8 @@
 import { Table, Tag, Button, Popconfirm, Tooltip, Input } from "antd";
 import { EditOutlined, DeleteOutlined, SearchOutlined,FunnelPlotOutlined } from "@ant-design/icons";
 import axios from "axios";
-<<<<<<< HEAD
-import "./taskList.css"
-=======
 import "./TaskList.css";
 
->>>>>>> dev2
 function TaskList({ tasks, onEdit, fetchTasks }) {
   const handleDelete = async (taskId) => {
     if (!taskId) {
@@ -125,22 +121,6 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
     },
     { title: "Dev Hours", dataIndex: "devHours", key: "devHours" },
     { title: "QA Hours", dataIndex: "qaHours", key: "qaHours" },
-<<<<<<< HEAD
-    { title: "Approved By", dataIndex: "approvedBy", key: "approvedBy" },
-    { 
-      title: "Billable", 
-      dataIndex: "isBillable", 
-      key: "isBillable", 
-      render: (value) => {
-        if (value === true) return "Yes";
-        if (value === false) return "No";
-        return "No"; // If null or undefined, display "N/A"
-      }
-    },
-    
-    { title: "Due Date", dataIndex: "dueDate", key: "dueDate" },
-    { title: "Assigned To", dataIndex: "assignedTo", key: "assignedTo" },
-=======
     { title: "Approved By", dataIndex: "approvedBy", key: "approvedBy",
 
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
@@ -170,7 +150,6 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
       filterIcon: <SearchOutlined style={{ color: "white" }} />,
       onFilter: (value, record) => record.assignedTo.toLowerCase().includes(value.toLowerCase()),
      },
->>>>>>> dev2
     { title: "Release Date", dataIndex: "releaseDate", key: "releaseDate" },
     {
       title: "Actions",
