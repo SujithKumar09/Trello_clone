@@ -6,6 +6,7 @@ import TextArea from "antd/es/input/TextArea";
 const { Option } = Select;
 
 const DetailedForm = ({ onFormSubmit, editingTask }) => {
+
   const [details, setDetails] = useState({
     taskName: "",
     taskDescription: "",
@@ -22,14 +23,34 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
   });
 
   useEffect(() => {
-    if (editingTask) {
+    console.log(editingTask)
+    if (editingTask!=null) {
       setDetails({
         ...editingTask,
         dueDate: editingTask.dueDate ? moment(editingTask.dueDate) : null, 
       releaseDate: editingTask.releaseDate ? moment(editingTask.releaseDate) : null,// Convert dueDate to moment object
+<<<<<<< HEAD
+=======
+      });
+    }else {
+      setDetails({
+        taskName: "",
+        taskDescription: "",
+        status: "Not Started",
+        dateCreated: moment().format("YYYY-MM-DD"),
+        bp: "",
+        devHours: 0,
+        qaHours: 0,
+        approvedBy: "",
+        isBillable: false,
+        dueDate: null,
+        assignedTo: "",
+        releaseDate: null,
+>>>>>>> dev2
       });
     }
-  }, [editingTask]);
+  
+  }, [editingTask,onFormSubmit]);
 
   // const handleChange = (field, value) => {
   //   setDetails((prev) => ({ ...prev, [field]: value }));
@@ -68,7 +89,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
         </Select>
       </Form.Item>
 
-      <Form.Item label="BP">
+      <Form.Item label="Business Partner">
         <Input value={details.bp} onChange={(e) => handleChange("bp", e.target.value)} />
       </Form.Item>
 
