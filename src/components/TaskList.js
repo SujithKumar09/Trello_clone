@@ -1,6 +1,7 @@
 import { Table, Tag, Button, Popconfirm } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
+import "./TaskList.css";
 
 function TaskList({ tasks, onEdit, fetchTasks }) {
   
@@ -75,7 +76,7 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
   return (
     <div>
       <h2>Task List</h2>
-      <Table dataSource={tasks} columns={columns} rowKey="id" pagination={{ pageSize: 6 }} />
+      <Table dataSource={tasks} columns={columns} rowKey="id" pagination={{ pageSize: 5 }} />
     </div>
   );
 }

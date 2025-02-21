@@ -55,7 +55,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
         </Select>
       </Form.Item>
 
-      <Form.Item label="BP">
+      <Form.Item label="Business Partner">
         <Input value={details.bp} onChange={(e) => handleChange("bp", e.target.value)} />
       </Form.Item>
 
