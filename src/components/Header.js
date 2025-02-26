@@ -5,6 +5,7 @@ import DetailedForm from "./DetailedForm";
 import axios from "axios";
 import TaskList from "./TaskList"; // Import TaskList
 import "./Header.css";
+import DetailsCard from "./DetailsCard";
 
 const Header = () => {
   const [isModalOpen, setisModalOpen] = useState(false);
@@ -12,6 +13,7 @@ const Header = () => {
   const [editingTask, setEditingTask] = useState(null); 
   const [filteredTasks, setFilteredTasks] = useState([]); // State for filtered tasks
   const [searchText, setSearchText] = useState("");
+  const [showMoreDetails, setShowMoreDetails] = useState(null);
 
   // Fetch tasks from the backend
   const fetchTasks = async () => {
@@ -63,6 +65,7 @@ const Header = () => {
   const handleCancel = () => {
     setisModalOpen(false);
     setEditingTask(null);
+    setShowMoreDetails(null);
   };
 
   const handleEdit = (task) => {
@@ -70,7 +73,9 @@ const Header = () => {
     setisModalOpen(true);
   };
 
-  //search 
+  const handleShowDetails = (task) => {
+    setShowMoreDetails(task);
+  } 
 
   useEffect(() => {
     const filtered = tasks.filter((task) =>
@@ -82,7 +87,7 @@ const Header = () => {
         task.assignedTo
       ]
         .some((field) =>
-          field?.toLowerCase().includes(searchText.toLowerCase()) // Case-insensitive search
+          field?.toLowerCase().includes(searchText.toLowerCase())
         )
     );
 
@@ -106,21 +111,29 @@ const Header = () => {
             ADD
           </Button>
         </div>
-
-        <Modal
-          title={editingTask ? "Edit Task" : "Add New Task"}
-          open={isModalOpen}
-          onCancel={handleCancel}
-          footer={null}
-          bodyStyle={{ padding: "10px", maxHeight: "70vh", overflowY: "auto" }} // Clean scrollbar
-        >
-          <div className="modal-form-container">
-            <DetailedForm onFormSubmit={handleFormData} editingTask={editingTask} />
-          </div>
-        </Modal>
       </Flex>
+      <Modal
+        title={editingTask ? "Edit Task" : "Add New Task"}
+        open={isModalOpen}
+        onCancel={handleCancel}
+        footer={null}
+        width={"60%"}
+        centered
+      >
+          <DetailedForm onFormSubmit={handleFormData} editingTask={editingTask} />
+      </Modal>
 
-      <TaskList tasks={filteredTasks} onEdit={handleEdit} fetchTasks={fetchTasks} />
+      <Modal
+        title="Task Details"
+        open={showMoreDetails!==null?true:false}
+        onCancel={handleCancel}
+        footer={null}
+        width={"40%"}
+        centered
+      >
+          <DetailsCard details={showMoreDetails}/>
+      </Modal>
+      <TaskList tasks={filteredTasks} onEdit={handleEdit} fetchTasks={fetchTasks} onShowMore={handleShowDetails}/>
     </div>
   );
 };

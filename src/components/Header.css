@@ -9,36 +9,3 @@
     margin-top:10px;
     padding-left:5rem;
 }
-
-/* Scrollable form inside the modal */
-.modal-form-container {
-    max-height: 60vh; /* Adjust height based on your needs */
-    overflow-y: auto; /* Enable scrolling */
-    padding-right: 10px; /* Prevent shifting when scrollbar appears */
-  }
-  
-  /* Custom scrollbar */
-  .modal-form-container::-webkit-scrollbar {
-    width: 8px; /* Adjust width for a slim look */
-  }
-  
-  .modal-form-container::-webkit-scrollbar-track {
-    background: #f0f0f0; /* Light grey track */
-    border-radius: 10px;
-  }
-  
-  .modal-form-container::-webkit-scrollbar-thumb {
-    background: #999; /* Soft grey scrollbar */
-    border-radius: 10px;
-  }
-  
-  .modal-form-container::-webkit-scrollbar-thumb:hover {
-    background: #666; /* Darker color on hover */
-  }
-  
-  /* Hide scrollbar for Firefox */
-  .modal-form-container {
-    scrollbar-width: thin;
-    scrollbar-color: #999 #f0f0f0;
-  }
-  

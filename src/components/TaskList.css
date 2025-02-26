@@ -1,29 +1,28 @@
-/* Table Container - Full Width */
 .table-container {
     width: 100%;
     padding: 10px;
   }
   
-  /* Remove Rounded Corners from Table */
+  
   .ant-table {
-    border-radius: 0px !important; /* Removes default border-radius */
-    border: 1px solid #ddd; /* Light border for separation */
+    border-radius: 0px !important; 
+    border: 1px solid #ddd; 
   }
   
-  /* Table Header Styling */
+ 
   .ant-table-thead > tr > th {
-    background: #1890ff !important; /* Blue background */
-    color: white !important; /* White text */
+    background: #1890ff !important;
+    color: white !important; 
     font-weight: bold;
     text-align: center !important;
     font-size: 13px;
     padding: 10px !important;
-    border-radius: 0px !important; /* Remove any rounding */
+    border-radius: 0px !important; 
   }
   
-  /* Table Content - Striped Rows */
+  
   .ant-table-tbody > tr:nth-child(odd) {
-    background-color: #f9f9f9; /* Light gray for odd rows */
+    background-color: #f9f9f9;
   }
   
   .ant-table-tbody > tr:nth-child(even) {
