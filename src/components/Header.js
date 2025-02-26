@@ -9,21 +9,23 @@ import "./Header.css";
 const Header = () => {
   const [isModalOpen, setisModalOpen] = useState(false);
   const [tasks, setTasks] = useState([]); // State for tasks
-  const [editingTask, setEditingTask] = useState(null); // Track task being edited
+  const [editingTask, setEditingTask] = useState(null); 
+  const [filteredTasks, setFilteredTasks] = useState([]); // State for filtered tasks
+  const [searchText, setSearchText] = useState("");
 
   // Fetch tasks from the backend
   const fetchTasks = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/tasks");
-      setTasks(response.data); // Set the tasks fetched from the backend
+      setTasks(response.data);
     } catch (error) {
       console.error("Error fetching tasks:", error.response?.data || error.message);
     }
   };
 
-  // Fetch tasks on component mount
+//to retrieve all tasks
   useEffect(() => {
-    fetchTasks(); // Fetch the tasks when the component first mounts
+    fetchTasks();
   }, []);
 
   const handleFormData = async (data) => {
@@ -68,11 +70,38 @@ const Header = () => {
     setisModalOpen(true);
   };
 
+  //search 
+
+  useEffect(() => {
+    const filtered = tasks.filter((task) =>
+      [
+        task.taskName,
+        task.taskDescription,
+        task.bp,
+        task.approvedBy,
+        task.assignedTo
+      ]
+        .some((field) =>
+          field?.toLowerCase().includes(searchText.toLowerCase()) // Case-insensitive search
+        )
+    );
+
+    setFilteredTasks(filtered);
+  }, [searchText, tasks]);
+
+  const handleSearch = (e) => {
+    setSearchText(e.target.value);
+  };
+
+
+
+
   return (
     <div>
       <Flex gap="large">
         <div style={{ margin: "auto", marginTop: "5px" }}>
-          <Input className="inputStyle" placeholder="Search" prefix={<SearchOutlined />} style={{ width: "400px" }} />
+          <Input className="inputStyle" placeholder="Search" prefix={<SearchOutlined />} style={{ width: "400px" }}  value={searchText}
+            onChange={handleSearch} />
           <Button type="primary" size="middle" style={{ marginLeft: "5px" }} onClick={formRender}>
             ADD
           </Button>
@@ -91,7 +120,7 @@ const Header = () => {
         </Modal>
       </Flex>
 
-      <TaskList tasks={tasks} onEdit={handleEdit} fetchTasks={fetchTasks} />
+      <TaskList tasks={filteredTasks} onEdit={handleEdit} fetchTasks={fetchTasks} />
     </div>
   );
 };
