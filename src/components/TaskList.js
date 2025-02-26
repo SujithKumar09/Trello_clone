@@ -31,7 +31,7 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
           value={selectedKeys[0]}
           onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => confirm()}
-          style={{ marginBottom: 8, display: "block" }}
+          style={{ display: "block" }}
         />
       ),
       filterIcon: <SearchOutlined style={{ color: "white" }} />,
@@ -48,7 +48,7 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
           value={selectedKeys[0]}
           onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => confirm()}
-          style={{ marginBottom: 8, display: "block" }}
+          style={{  display: "block" }}
         />
       ),
       filterIcon: <SearchOutlined style={{ color: "white" }} />,
@@ -113,7 +113,7 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
           value={selectedKeys[0]}
           onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => confirm()}
-          style={{ marginBottom: 8, display: "block" }}
+          style={{ display: "block" }}
         />
       ),
       filterIcon: <SearchOutlined style={{ color: "white" }} />,
@@ -129,7 +129,7 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
           value={selectedKeys[0]}
           onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => confirm()}
-          style={{ marginBottom: 8, display: "block" }}
+          style={{ display: "block" }}
         />
       ),
       filterIcon: <SearchOutlined style={{ color: "white" }} />,
@@ -144,7 +144,7 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
           value={selectedKeys[0]}
           onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => confirm()}
-          style={{ marginBottom: 8, display: "block" }}
+          style={{  display: "block" }}
         />
       ),
       filterIcon: <SearchOutlined style={{ color: "white" }} />,
@@ -174,7 +174,7 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
         rowKey="id"
         pagination={{ pageSize: 6 }}
         scroll={{ x: "max-content" }}
-        style={{ wordBreak: "break-word" }}
+        style={{ wordBreak: "break-word"}}
         className="container"
       />
     </div>
