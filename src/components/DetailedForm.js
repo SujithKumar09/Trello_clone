@@ -23,9 +23,6 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
     releaseDate: "",
   });
 
-  //adding filters on search bar
-  
-
   useEffect(() => {
     console.log(editingTask)
     if (editingTask!=null) {

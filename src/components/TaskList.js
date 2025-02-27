@@ -134,7 +134,6 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
 
   return (
     <div>
-      <h2>Task List</h2>
       <Table
         dataSource={tasks}
         columns={columns}
