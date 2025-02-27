@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button, Flex, Input, Modal } from "antd";
+import { Button, Row,Col, Input, Modal } from "antd";
 import DetailedForm from "./DetailedForm";
 import axios from "axios";
 import TaskList from "./TaskList"; // Import TaskList
 import "./Header.css";
+import DetailsCard from "./DetailsCard";
 
 const Header = () => {
   const [isModalOpen, setisModalOpen] = useState(false);
@@ -12,6 +13,7 @@ const Header = () => {
   const [editingTask, setEditingTask] = useState(null); 
   const [filteredTasks, setFilteredTasks] = useState([]); // State for filtered tasks
   const [searchText, setSearchText] = useState("");
+  const [showMoreDetails, setShowMoreDetails] = useState(null);
 
   // Fetch tasks from the backend
   const fetchTasks = async () => {
@@ -63,6 +65,7 @@ const Header = () => {
   const handleCancel = () => {
     setisModalOpen(false);
     setEditingTask(null);
+    setShowMoreDetails(null);
   };
 
   const handleEdit = (task) => {
@@ -70,7 +73,9 @@ const Header = () => {
     setisModalOpen(true);
   };
 
-  //search 
+  const handleShowDetails = (task) => {
+    setShowMoreDetails(task);
+  } 
 
   useEffect(() => {
     const filtered = tasks.filter((task) =>
@@ -82,7 +87,7 @@ const Header = () => {
         task.assignedTo
       ]
         .some((field) =>
-          field?.toLowerCase().includes(searchText.toLowerCase()) // Case-insensitive search
+          field?.toLowerCase().includes(searchText.toLowerCase())
         )
     );
 
@@ -98,29 +103,38 @@ const Header = () => {
 
   return (
     <div>
-      <Flex gap="large">
-        <div style={{ margin: "auto", marginTop: "5px" }}>
-          <Input className="inputStyle" placeholder="Search" prefix={<SearchOutlined />} style={{ width: "400px" }}  value={searchText}
-            onChange={handleSearch} />
+      <Row style={{alignItems:"center", margin:"1em 1em"}}>
+        <Col span={18}>
+          <Input className="inputStyle" placeholder="Search" prefix={<SearchOutlined />} value={searchText} onChange={handleSearch} />
+        </Col>
+        <Col span={6}>
           <Button type="primary" size="middle" style={{ marginLeft: "5px" }} onClick={formRender}>
             ADD
           </Button>
-        </div>
+        </Col>
+      </Row>
+      <Modal
+        title={editingTask ? "Edit Task" : "Add New Task"}
+        open={isModalOpen}
+        onCancel={handleCancel}
+        footer={null}
+        width={"60%"}
+        centered
+      >
+          <DetailedForm onFormSubmit={handleFormData} editingTask={editingTask} />
+      </Modal>
 
-        <Modal
-          title={editingTask ? "Edit Task" : "Add New Task"}
-          open={isModalOpen}
-          onCancel={handleCancel}
-          footer={null}
-          bodyStyle={{ padding: "10px", maxHeight: "70vh", overflowY: "auto" }} // Clean scrollbar
-        >
-          <div className="modal-form-container">
-            <DetailedForm onFormSubmit={handleFormData} editingTask={editingTask} />
-          </div>
-        </Modal>
-      </Flex>
-
-      <TaskList tasks={filteredTasks} onEdit={handleEdit} fetchTasks={fetchTasks} />
+      <Modal
+        title="Task Details"
+        open={showMoreDetails!==null?true:false}
+        onCancel={handleCancel}
+        footer={null}
+        width={"40%"}
+        centered
+      >
+          <DetailsCard details={showMoreDetails}/>
+      </Modal>
+      <TaskList tasks={filteredTasks} onEdit={handleEdit} fetchTasks={fetchTasks} onShowMore={handleShowDetails}/>
     </div>
   );
 };

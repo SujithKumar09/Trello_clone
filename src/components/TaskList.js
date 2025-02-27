@@ -1,9 +1,50 @@
-import { Table, Tag, Button, Popconfirm, Tooltip, Input } from "antd";
-import { EditOutlined, DeleteOutlined, SearchOutlined,FunnelPlotOutlined } from "@ant-design/icons";
+import { Button, Popconfirm, Tag } from "antd";
+import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import axios from "axios";
 import "./TaskList.css";
+// import { useState } from "react";
 
-function TaskList({ tasks, onEdit, fetchTasks }) {
+
+import { AgGridReact } from "ag-grid-react";
+
+import {
+  ClientSideRowModelModule,
+  ModuleRegistry,
+  NumberFilterModule,
+  PinnedRowModule,
+  TextFilterModule,
+  ValidationModule,
+  DateFilterModule,
+  PaginationModule,
+} from "ag-grid-community";
+
+
+import {
+  ColumnMenuModule,
+  ColumnsToolPanelModule,
+  ContextMenuModule,
+  RowGroupingModule,
+} from "ag-grid-enterprise";
+
+ModuleRegistry.registerModules([
+  TextFilterModule,
+  PinnedRowModule,
+  ClientSideRowModelModule,
+  ColumnsToolPanelModule,
+  ColumnMenuModule,
+  ContextMenuModule,
+  RowGroupingModule,
+  NumberFilterModule,
+  ValidationModule,
+  DateFilterModule ,
+  PaginationModule,
+]);
+
+
+
+function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
+
+
   const handleDelete = async (taskId) => {
     if (!taskId) {
       console.error("Task ID is undefined, cannot delete.");
@@ -20,70 +61,16 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
     }
   };
 
-  const columns = [
+  //ag-grid
+  const columnDefs = [
+    { headerName: "Task Name", field: "taskName", sortable: true, filter: true},
+    // { headerName: "Status", field: "status", sortable: true, filter: true },
     {
-      title: "Task Name",
-      dataIndex: "taskName",
-      key: "taskName",
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
-        <Input
-          placeholder="Search Task Name"
-          value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => confirm()}
-          style={{ display: "block" }}
-        />
-      ),
-      filterIcon: <SearchOutlined style={{ color: "white" }} />,
-      onFilter: (value, record) => record.taskName.toLowerCase().includes(value.toLowerCase()),
-      ellipsis: true,
-    },
-    {
-      title: "Task Description",
-      dataIndex: "taskDescription",
-      key: "taskDescription",
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
-        <Input
-          placeholder="Search Task Description"
-          value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => confirm()}
-          style={{  display: "block" }}
-        />
-      ),
-      filterIcon: <SearchOutlined style={{ color: "white" }} />,
-      onFilter: (value, record) => record.taskDescription.toLowerCase().includes(value.toLowerCase()),
-      render: (text) => (
-        <Tooltip title={text}>
-         <div
-        style={{
-          maxWidth: "150px", // Set a fixed width to prevent column expansion
-          whiteSpace: "nowrap", // Prevents text from wrapping
-          overflow: "hidden", // Hides overflowing text
-          textOverflow: "ellipsis", // Adds "..." for overflowed text
-        }}
-      >
-        {text}
-      </div>
-        </Tooltip>
-      ),
-      ellipsis: true,
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      filters: [
-        { text: "Not Started", value: "Not Started" },
-        { text: "On Going", value: "On Going" },
-        { text: "On Hold", value: "On Hold" },
-        { text: "Completed", value: "Completed" },
-      ],
-      onFilter: (value, record) => record.status === value,
-      filterIcon: (filtered) => (
-        <FunnelPlotOutlined style={{color:"white"}} />
-      ),
-      render: (status) => {
+      headerName: "Status",
+      field: "status",
+      sortable: true, filter: true,
+      cellRenderer: (params) => {
+        const status = params.value;
         let color;
         switch (status) {
           case "Completed":
@@ -101,84 +88,68 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
           default:
             color = "gray";
         }
+    
         return <Tag color={color}>{status}</Tag>;
-      },
-    },
-    { title: "Created Date", dataIndex: "dateCreated", key: "dateCreated" },
-    { title: "Business Partner", dataIndex: "bp", key: "bp",
+      }
+    },    
+    { headerName: "Business Partner", field: "bp", sortable: true, filter: true },
+    { headerName: "Approved By", field: "approvedBy", sortable: true, filter: true },
+    { headerName: "Due Date", field: "dueDate", sortable: true, filter: "agDateColumnFilter" },
 
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
-        <Input
-          placeholder="Search Business Partner"
-          value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => confirm()}
-          style={{ display: "block" }}
-        />
-      ),
-      filterIcon: <SearchOutlined style={{ color: "white" }} />,
-      onFilter: (value, record) => record.bp.toLowerCase().includes(value.toLowerCase()),
-    },
-    { title: "Dev Hours", dataIndex: "devHours", key: "devHours" },
-    { title: "QA Hours", dataIndex: "qaHours", key: "qaHours" },
-    { title: "Approved By", dataIndex: "approvedBy", key: "approvedBy",
 
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
-        <Input
-          placeholder="Search Approved By"
-          value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => confirm()}
-          style={{ display: "block" }}
-        />
-      ),
-      filterIcon: <SearchOutlined style={{ color: "white" }} />,
-      onFilter: (value, record) => record.approvedBy.toLowerCase().includes(value.toLowerCase()),
-      
-    },
-    { title: "Due Date", dataIndex: "dueDate", key: "dueDate" },
-    { title: "Assigned To", dataIndex: "assignedTo", key: "assignedTo",
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
-        <Input
-          placeholder="Search Assigned To"
-          value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => confirm()}
-          style={{  display: "block" }}
-        />
-      ),
-      filterIcon: <SearchOutlined style={{ color: "white" }} />,
-      onFilter: (value, record) => record.assignedTo.toLowerCase().includes(value.toLowerCase()),
-     },
-    { title: "Release Date", dataIndex: "releaseDate", key: "releaseDate" },
+    // { headerName: "Assigned To", field: "assignedTo", sortable: true, filter: true },
     {
-      title: "Actions",
-      key: "actions",
-      render: (_, record) => (
+      headerName: "Actions", 
+      field: "actions", 
+      cellRenderer: (params) => (
         <>
-          <Button type="link" icon={<EditOutlined />} onClick={() => onEdit(record)} />
-          <Popconfirm title="Delete this task?" onConfirm={() => handleDelete(record.id)} okText="Yes" cancelText="No">
-            <Button type="link" icon={<DeleteOutlined />} danger />
+          <Button 
+            type="link" 
+            icon={<EditOutlined />} 
+            onClick={() => onEdit(params.data)} 
+          />
+          <Popconfirm 
+            title="Delete this task?" 
+            onConfirm={() => handleDelete(params.data.id)} 
+            okText="Yes" 
+            cancelText="No"
+          >
+            <Button 
+              type="link" 
+              icon={<DeleteOutlined />} 
+              danger 
+            />
           </Popconfirm>
+          <Button type="link" icon={<EyeOutlined/>} onClick={()=>onShowMore(params.data)}/>
         </>
       ),
     },
+    
   ];
 
+
   return (
-    <div>
-      <h2>Task List</h2>
-      <Table
-        dataSource={tasks}
-        columns={columns}
-        rowKey="id"
-        pagination={{ pageSize: 6 }}
-        scroll={{ x: "max-content" }}
-        style={{ wordBreak: "break-word"}}
-        className="container"
-      />
+ <div style={{ textAlign: "center", marginBottom: "10px" }}>
+
+
+      <div className="ag-theme-alpine" style={{ height: 500, width: "96%",margin:"auto"}}>
+        <AgGridReact
+          rowData={tasks}
+          columnDefs={columnDefs}
+          pagination={true}
+          // paginationPageSize={pageSize}
+          // paginationPageSizeSelector={true}
+          paginationPageSizeSelector={[10,20, 50, 100]}
+          // suppressPaginationPanel={true} 
+          // domLayout="autoHeight"
+        />
+      </div>
+
+
+
     </div>
   );
+
 }
 
 export default TaskList;

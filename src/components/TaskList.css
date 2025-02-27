@@ -1,0 +1,15 @@
+/* .custom-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align to the left 
+  gap: 5px;
+  padding: 5px;
+  position: absolute;
+  bottom: 5px; /* Adjust as needed 
+  left: 10px; /* Align to the left inside AG Grid *
+}
+
+.custom-page-size-input {
+  width: 60px; /* Match AG Grid's input size 
+  text-align: center;
+} */
