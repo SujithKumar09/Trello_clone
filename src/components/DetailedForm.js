@@ -73,6 +73,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
       <Row>
         <Col span={12}>
         <Form.Item label="Task Name" name="taskName" rules={[{ required: true, message: 'Please input your task name' }]} labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
+
           <Input value={details.taskName} onChange={(e) => handleChange("taskName", e.target.value)} width={"100%"}/>
         </Form.Item>
         </Col>
@@ -131,6 +132,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
       <Row >
         <Col span={12}>
           <Form.Item label="ApprovedBy" name="approvedBy" rules={[{ required: true, message: 'Please input name of approver' }]} labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
+
             <Input value={details.approvedBy} onChange={(e) => handleChange("approvedBy", e.target.value)} />
           </Form.Item>
         </Col>

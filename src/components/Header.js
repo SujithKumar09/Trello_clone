@@ -110,10 +110,9 @@ const Header = () => {
         <Col span={6}>
         <Button type="primary" size="middle" style={{ marginLeft: "5px" }} onClick={formRender}>
             ADD
-          </Button>
+         </Button>
         </Col>
       </Row>
-        
       <Modal
         title={editingTask ? "Edit Task" : "Add New Task"}
         open={isModalOpen}

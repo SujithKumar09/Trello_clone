@@ -1,8 +1,7 @@
 import { Button, Popconfirm, Tag } from "antd";
 import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import axios from "axios";
-// import "./TaskList.css";
-// import { useState } from "react";
+
 
 
 import { AgGridReact } from "ag-grid-react";
@@ -63,6 +62,7 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
   //ag-grid
   const columnDefs = [
     { headerName: "Task Name", field: "taskName", sortable: true, filter: true,flex:2},
+
     // { headerName: "Status", field: "status", sortable: true, filter: true },
     {
       headerName: "Status",
@@ -97,11 +97,13 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
     { headerName: "Due Date", field: "dueDate", sortable: true, filter: "agDateColumnFilter",flex :1 },
 
 
+
     // { headerName: "Assigned To", field: "assignedTo", sortable: true, filter: true },
     {
       headerName: "Actions", 
       field: "actions", 
       flex :1,
+
       cellRenderer: (params) => (
         <>
           <Button 
@@ -134,6 +136,7 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
 
 
       <div className="ag-theme-alpine" style={{ height: 500 , width: "96vw",margin:"auto"}}>
+
         <AgGridReact
           rowData={tasks}
           columnDefs={columnDefs}
@@ -144,6 +147,7 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
           // suppressPaginationPanel={true} 
           domLayout="autoHeight"
           // suppressAutoSize={true}
+
         />
       </div>
 
