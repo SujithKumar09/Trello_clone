@@ -4,7 +4,7 @@ import DisplayTable from './components/DisplayTable';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" >
       <Header/>
       <DisplayTable/>
     </div>

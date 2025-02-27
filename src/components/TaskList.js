@@ -1,7 +1,10 @@
 import { Button, Popconfirm, Tag } from "antd";
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, EyeOutlined} from "@ant-design/icons";
 import axios from "axios";
 
+// import "./TaskList.css";
+// import { useState } from "react";
+// import { useEffect,useRef } from "react";
 
 
 import { AgGridReact } from "ag-grid-react";
@@ -15,6 +18,7 @@ import {
   ValidationModule,
   DateFilterModule,
   PaginationModule,
+  TooltipModule,
 } from "ag-grid-community";
 
 
@@ -37,6 +41,7 @@ ModuleRegistry.registerModules([
   ValidationModule,
   DateFilterModule ,
   PaginationModule,
+  TooltipModule,
 ]);
 
 
@@ -63,11 +68,14 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
   const columnDefs = [
     { headerName: "Task Name", field: "taskName", sortable: true, filter: true,flex:2},
 
+    { headerName: "Task Name", field: "taskName", sortable: true, filter: true,flex:2,tooltipField: "taskName", 
+    },
     // { headerName: "Status", field: "status", sortable: true, filter: true },
     {
       headerName: "Status",
       field: "status",
       flex:0.5,
+      flex:1,
       sortable: true, filter: true,
       cellRenderer: (params) => {
         const status = params.value;
@@ -96,6 +104,9 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
     { headerName: "Approved By", field: "approvedBy", sortable: true, filter: true ,flex :1},
     { headerName: "Due Date", field: "dueDate", sortable: true, filter: "agDateColumnFilter",flex :1 },
 
+    { headerName: "Business Partner", field: "bp", sortable: true, filter: true,flex:1},
+    { headerName: "Approved By", field: "approvedBy", sortable: true, filter: true,flex:1 },
+    { headerName: "Due Date", field: "dueDate", sortable: true,flex:1, filter: "agDateColumnFilter" },
 
 
     // { headerName: "Assigned To", field: "assignedTo", sortable: true, filter: true },
@@ -104,6 +115,8 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
       field: "actions", 
       flex :1,
 
+      field: "actions",
+      flex:1, 
       cellRenderer: (params) => (
         <>
           <Button 
@@ -131,12 +144,19 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
   ];
   
   // gridOptions.api.sizeColumnsToFit();
+
+  
+
+
+
   return (
+ <div style={{ textAlign: "left", marginBottom: "10px" }}>
  <div style={{ textAlign: "left", marginBottom: "10px" }}>
 
 
       <div className="ag-theme-alpine" style={{ height: 500 , width: "96vw",margin:"auto"}}>
 
+      <div className="ag-theme-alpine" style={{ height: 500, width: "96vw",margin:"auto"}}>
         <AgGridReact
           rowData={tasks}
           columnDefs={columnDefs}
@@ -148,6 +168,7 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
           domLayout="autoHeight"
           // suppressAutoSize={true}
 
+          domLayout="autoHeight"
         />
       </div>
 
