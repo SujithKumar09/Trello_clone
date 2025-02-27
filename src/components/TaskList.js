@@ -66,15 +66,11 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
 
   //ag-grid
   const columnDefs = [
-    { headerName: "Task Name", field: "taskName", sortable: true, filter: true,flex:2},
-
-    { headerName: "Task Name", field: "taskName", sortable: true, filter: true,flex:2,tooltipField: "taskName", 
-    },
+    { headerName: "Task Name", field: "taskName", sortable: true, filter: true,flex:2,tooltipField: "taskName"},
     // { headerName: "Status", field: "status", sortable: true, filter: true },
     {
       headerName: "Status",
       field: "status",
-      flex:0.5,
       flex:1,
       sortable: true, filter: true,
       cellRenderer: (params) => {
@@ -104,19 +100,13 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
     { headerName: "Approved By", field: "approvedBy", sortable: true, filter: true ,flex :1},
     { headerName: "Due Date", field: "dueDate", sortable: true, filter: "agDateColumnFilter",flex :1 },
 
-    { headerName: "Business Partner", field: "bp", sortable: true, filter: true,flex:1},
-    { headerName: "Approved By", field: "approvedBy", sortable: true, filter: true,flex:1 },
-    { headerName: "Due Date", field: "dueDate", sortable: true,flex:1, filter: "agDateColumnFilter" },
-
 
     // { headerName: "Assigned To", field: "assignedTo", sortable: true, filter: true },
     {
       headerName: "Actions", 
       field: "actions", 
       flex :1,
-
-      field: "actions",
-      flex:1, 
+ 
       cellRenderer: (params) => (
         <>
           <Button 
@@ -151,12 +141,10 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
 
   return (
  <div style={{ textAlign: "left", marginBottom: "10px" }}>
- <div style={{ textAlign: "left", marginBottom: "10px" }}>
 
 
       <div className="ag-theme-alpine" style={{ height: 500 , width: "96vw",margin:"auto"}}>
 
-      <div className="ag-theme-alpine" style={{ height: 500, width: "96vw",margin:"auto"}}>
         <AgGridReact
           rowData={tasks}
           columnDefs={columnDefs}
@@ -168,7 +156,6 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
           domLayout="autoHeight"
           // suppressAutoSize={true}
 
-          domLayout="autoHeight"
         />
       </div>
 
