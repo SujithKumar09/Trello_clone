@@ -16,12 +16,12 @@ const initialFormData = {
 };
 
 export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async () => {
-  const response = await fetch('http://localhost:8080/api/alltasks');
+  const response = await fetch('http://localhost:8080/api/tasks');
   return response.json();
 });
 
 export const addTask = createAsyncThunk('tasks/addTask', async (task) => {
-  const response = await fetch('http://localhost:8080/api/addtask', {
+  const response = await fetch('http://localhost:8080/api/tasks', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(task),
@@ -30,7 +30,7 @@ export const addTask = createAsyncThunk('tasks/addTask', async (task) => {
 });
 
 export const editTask = createAsyncThunk('tasks/editTask', async (task) => {
-  const response = await fetch('http://localhost:8080/api/editTask', {
+  const response = await fetch(`http://localhost:8080/api/tasks/${task.id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(task),
@@ -39,7 +39,7 @@ export const editTask = createAsyncThunk('tasks/editTask', async (task) => {
 });
 
 export const deleteTask = createAsyncThunk('tasks/deleteTask', async (id) => {
-  await fetch(`http://localhost:8080/api/deleteTask/${id}`, {
+  await fetch(`http://localhost:8080/api/tasks/${id}`, {
     method: 'DELETE',
   });
   return id;
@@ -76,30 +76,30 @@ const tasksSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchTasks.pending, (state) => {
-        state.tasks.status = 'loading';
+        state.task.status = 'loading';
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {
-        state.tasks.status = 'succeeded';
-        state.tasks.list = action.payload;
+        state.task.status = 'succeeded';
+        state.task.list = action.payload;
       })
       .addCase(fetchTasks.rejected, (state, action) => {
-        state.tasks.status = 'failed';
-        state.tasks.error = action.error.message;
+        state.task.status = 'failed';
+        state.task.error = action.error.message;
       })
       .addCase(addTask.fulfilled, (state, action) => {
-        state.tasks.list.push(action.payload);
+        state.task.list.push(action.payload);
         state.form.isModalOpen = false;
         state.form.data = initialFormData;
       })
       .addCase(editTask.fulfilled, (state, action) => {
-        const index = state.tasks.list.findIndex((t) => t.id === action.payload.id);
-        if (index !== -1) state.tasks.list[index] = action.payload;
+        const index = state.task.list.findIndex((t) => t.id === action.payload.id);
+        if (index !== -1) state.task.list[index] = action.payload;
         state.form.isModalOpen = false;
         state.form.isEditMode = false;
         state.form.data = initialFormData;
       })
       .addCase(deleteTask.fulfilled, (state, action) => {
-        state.tasks.list = state.tasks.list.filter((t) => t.id !== action.payload);
+        state.task.list = state.task.list.filter((t) => t.id !== action.payload);
       });
   },
 });

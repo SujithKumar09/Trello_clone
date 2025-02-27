@@ -2,34 +2,64 @@ import { Form, Select, Input, DatePicker, InputNumber, Radio, Button } from 'ant
 import moment from 'moment';
 import TextArea from 'antd/es/input/TextArea';
 import { useSelector, useDispatch } from 'react-redux';
-import setFormData  from './taskSlice';
-import editTask  from './taskSlice';
-import  addTask from './taskSlice';
+import { useEffect } from 'react';
+import { setFormData, editTask, addTask} from './taskSlice';
+import { setModalOpen } from './taskSlice'; 
 
 const DetailedForm = () => {
   const dispatch = useDispatch();
-  const { data, isEditMode } = useSelector((state) => state.tasks.form);
+  const { data,isModalOpen, isEditMode } = useSelector((state) => state.tasks.form);
+  const [form]=Form.useForm();
+
+  useEffect(() => {
+    if (isModalOpen) {
+      form.setFieldsValue({
+        ...data,
+        dateCreated: data.dateCreated ? moment(data.dateCreated) : null,
+        dueDate: data.dueDate ? moment(data.dueDate) : null,
+        releaseDate: data.releaseDate ? moment(data.releaseDate) : null,
+      });
+    }
+  }, [isModalOpen,data,form]);
 
   const handleChange = (fieldName, value) => {
-    dispatch(setFormData({ [fieldName]: value }));
+    const newValue = moment.isMoment(value) ? value.format('YYYY-MM-DD') : value;
+    dispatch(setFormData({ ...data, [fieldName]: newValue }));  
   };
 
   const handleSubmit = () => {
-    if (isEditMode) {
-      dispatch(editTask(data));
-    } else {
-      dispatch(addTask(data));
-    }
+    form
+      .validateFields()
+      .then((values) => {
+        const updatedData = {
+          ...data,
+          ...values,
+          dateCreated: values.dateCreated ? values.dateCreated.format('YYYY-MM-DD') : null,
+          dueDate: values.dueDate ? values.dueDate.format('YYYY-MM-DD') : null,
+          releaseDate: values.releaseDate ? values.releaseDate.format('YYYY-MM-DD') : null,
+        };
+        if (isEditMode) {
+          dispatch(editTask(updatedData));
+        } else {
+          dispatch(addTask(updatedData));
+        }
+        dispatch(setModalOpen(false));
+      })
+      .catch((info) => {
+        console.log('Validation Failed:', info);
+      });
   };
 
   return (
     <Form
+      form={form}
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
       layout="horizontal"
       style={{ maxWidth: 700 }}
       labelAlign="left"
       onFinish={handleSubmit}
+      initialValues={data}
     >
       <Form.Item label="Task Name" name="taskName" rules={[{ required: true, message: 'Please input your task name' }]}>
         <Input

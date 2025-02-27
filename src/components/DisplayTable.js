@@ -2,11 +2,7 @@ import { useEffect } from 'react';
 import { Table, Tag, Button, Popconfirm, Flex } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import setEditMode  from './taskSlice';
-import  setFormData  from './taskSlice';
-import setModalOpen  from './taskSlice';
-import fetchTasks from './taskSlice';
-import deleteTask from './taskSlice';
+import { setEditMode, setFormData, setModalOpen, fetchTasks, deleteTask } from './taskSlice';
 
 const DisplayTable = () => {
   const dispatch = useDispatch();
@@ -14,18 +10,18 @@ const DisplayTable = () => {
 
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(fetchTasks());
+      dispatch(fetchTasks()); 
     }
   }, [status, dispatch]);
 
   const handleEdit = (record) => {
-    dispatch(setEditMode(true));
-    dispatch(setFormData(record));
-    dispatch(setModalOpen(true));
+    dispatch(setEditMode(true)); 
+    dispatch(setFormData(record)); 
+    dispatch(setModalOpen(true)); 
   };
 
   const handleDelete = (id) => {
-    dispatch(deleteTask(id));
+    dispatch(deleteTask(id)); 
   };
 
   const columns = [
@@ -49,9 +45,9 @@ const DisplayTable = () => {
     { title: 'QA Hours', dataIndex: 'qaHours', key: 'qaHours' },
     { title: 'Approved By', dataIndex: 'approvedBy', key: 'approvedBy' },
     { title: 'Billable or Not', dataIndex: 'isBillable', key: 'isBillable', render: (isBillable) => (isBillable ? 'Yes' : 'No') },
-    { title: 'Due Date', dataIndex: 'dueDate', key: 'dueDate', render: (text) => new Date(text).toLocaleDateString() },
+    { title: 'Due Date', dataIndex: 'dueDate', key: 'dueDate', render: (text) => (text ? new Date(text).toLocaleDateString() : '-') },
     { title: 'Assigned To', dataIndex: 'assignedTo', key: 'assignedTo' },
-    { title: 'Release Date', dataIndex: 'releaseDate', key: 'releaseDate', render: (text) => new Date(text).toLocaleDateString() },
+    { title: 'Release Date', dataIndex: 'releaseDate', key: 'releaseDate', render: (text) => (text ? new Date(text).toLocaleDateString() : '-') },
     {
       title: 'Action',
       key: 'Action',

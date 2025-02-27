@@ -4,9 +4,7 @@ import DetailedForm from './DetailedForm';
 import DisplayTable from './DisplayTable';
 import './Header.css';
 import { useSelector, useDispatch } from 'react-redux';
-import setModalOpen  from './taskSlice';
-import resetFormData  from './taskSlice';
-import setEditMode from './taskSlice';
+import {setModalOpen, resetFormData, setEditMode} from './taskSlice';
 
 const Header = () => {
   const dispatch = useDispatch();
