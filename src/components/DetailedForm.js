@@ -75,19 +75,19 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
     <Form  layout="horizontal" >
       <Row>
         <Col span={12}>
-        <Form.Item label="Task Name" required labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} labelAlign="left">
+        <Form.Item label="Task Name" required labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
           <Input value={details.taskName} onChange={(e) => handleChange("taskName", e.target.value)} width={"100%"}/>
         </Form.Item>
         </Col>
         <Col span={12}>
-        <Form.Item label="Task Description" labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} labelAlign="left">
+        <Form.Item label="Task Description" labelCol={{ span: 9 }} wrapperCol={{ span: 15 }} labelAlign="left">
           <TextArea rows={2} value={details.taskDescription} onChange={(e) => handleChange("taskDescription", e.target.value)} />
         </Form.Item>
         </Col>
       </Row>
       <Row>
         <Col span={12}>
-          <Form.Item label="Status" labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} labelAlign="left">
+          <Form.Item label="Status" labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
             <Select value={details.status} onChange={(value) => handleChange("status", value)}>
               <Option value="Not Started">Not Started</Option>
               <Option value="On Going">On Going</Option>
@@ -97,7 +97,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
           </Form.Item>
           </Col>
           <Col span={12}>
-          <Form.Item label="Created Date" name="dateCreated" rules={[{ required: true, message: 'Please input the created date' }]} labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} labelAlign="left">
+          <Form.Item label="Created Date" name="dateCreated" rules={[{ required: true, message: 'Please input the created date' }]} labelCol={{ span: 9 }} wrapperCol={{ span: 15 }} labelAlign="left">
             <DatePicker
               value={details.dateCreated ? moment(details.dateCreated) : null}
               onChange={(date, dateString) => handleChange('dateCreated', dateString)}
@@ -108,24 +108,24 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
       </Row>
       <Row>
         <Col span={12}>
-          <Form.Item label="Business Partner"  labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} labelAlign="left">
+          <Form.Item label="Business Partner"  labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
             <Input value={details.bp} onChange={(e) => handleChange("bp", e.target.value)} />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Client Name"  labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} labelAlign="left">
+          <Form.Item label="Client Name"  labelCol={{ span: 9 }} wrapperCol={{ span: 15 }} labelAlign="left">
             <Input value={details.clientName} onChange={(e) => handleChange("clientName", e.target.value)} />
           </Form.Item>
         </Col>
       </Row>
       <Row >
         <Col span={12}>
-          <Form.Item label="Development Hours" labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} labelAlign="left">
+          <Form.Item label="Development Hours" labelCol={{ span: 9 }} wrapperCol={{ span: 15 }} labelAlign="left">
             <InputNumber min={0} value={details.devHours} onChange={(value) => handleChange("devHours", value)} />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="QA Hours"  labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} labelAlign="left">
+          <Form.Item label="QA Hours"  labelCol={{ span: 9 }} wrapperCol={{ span: 15 }} labelAlign="left">
             <InputNumber min={0} value={details.qaHours} onChange={(value) => handleChange("qaHours", value)} />
           </Form.Item>
         </Col>
@@ -133,12 +133,12 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
 
       <Row >
         <Col span={12}>
-          <Form.Item label="ApprovedBy" labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} labelAlign="left">
+          <Form.Item label="ApprovedBy" labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
             <Input value={details.approvedBy} onChange={(e) => handleChange("approvedBy", e.target.value)} />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Assigned To" labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} labelAlign="left">
+          <Form.Item label="Assigned To" labelCol={{ span: 9 }} wrapperCol={{ span: 15 }} labelAlign="left">
             <Input value={details.assignedTo} onChange={(e) => handleChange("assignedTo", e.target.value)} />
           </Form.Item>
         </Col>

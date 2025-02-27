@@ -20,16 +20,15 @@ const DetailsCard = ({ details }) => {
                 "gray";
     }
     return (
-        <Card title={
+        <Card>
             <Row>
-                <Col span={20}>
-                    <h2>{details.taskName}</h2>
+                <Col span={18}>
+                    <p><b>Task Name :</b> {details.taskName}</p>
                 </Col>
-                <Col span={4} style={{marginBottom:"auto", marginTop:"auto"}}>
+                <Col span={6} style={{textAlign:"center",alignContent:"center"}}>
                     <Tag color={color}>{details.status}</Tag>
                 </Col>
             </Row>
-        }>
             <p><b>Task Description :</b> {details.taskDescription}</p>
             <Row>
                 <Col span={12}><p><b>Business Partner :</b> {details.bp}</p></Col>

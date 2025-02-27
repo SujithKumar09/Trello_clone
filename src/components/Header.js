@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button, Flex, Input, Modal } from "antd";
+import { Button, Row,Col, Input, Modal } from "antd";
 import DetailedForm from "./DetailedForm";
 import axios from "axios";
 import TaskList from "./TaskList"; // Import TaskList
@@ -103,15 +103,16 @@ const Header = () => {
 
   return (
     <div>
-      <Flex gap="large">
-        <div style={{ margin: "auto", marginTop: "5px" }}>
-          <Input className="inputStyle" placeholder="Search" prefix={<SearchOutlined />} style={{ width: "400px" }}  value={searchText}
-            onChange={handleSearch} />
+      <Row style={{alignItems:"center", margin:"1em 1em"}}>
+        <Col span={18}>
+          <Input className="inputStyle" placeholder="Search" prefix={<SearchOutlined />} value={searchText} onChange={handleSearch} />
+        </Col>
+        <Col span={6}>
           <Button type="primary" size="middle" style={{ marginLeft: "5px" }} onClick={formRender}>
             ADD
           </Button>
-        </div>
-      </Flex>
+        </Col>
+      </Row>
       <Modal
         title={editingTask ? "Edit Task" : "Add New Task"}
         open={isModalOpen}
