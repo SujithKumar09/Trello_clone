@@ -73,7 +73,6 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
       headerName: "Status",
       field: "status",
       flex:0.5,
-      flex:1,
       sortable: true, filter: true,
       cellRenderer: (params) => {
         const status = params.value;
@@ -107,10 +106,7 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
     {
       headerName: "Actions", 
       field: "actions", 
-      flex :1,
-
-      field: "actions",
-      flex:1, 
+      flex :1, 
       cellRenderer: (params) => (
         <>
           <Button 
