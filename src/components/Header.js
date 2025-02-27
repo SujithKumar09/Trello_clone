@@ -108,16 +108,9 @@ const Header = () => {
           <Input className="inputStyle" placeholder="Search" prefix={<SearchOutlined />} value={searchText} onChange={handleSearch} />
         </Col>
         <Col span={6}>
-      <Row style={{alignItems:"center", margin:"1em 1em"}}>
-        <Col span={18}>
-          <Input className="inputStyle" placeholder="Search" prefix={<SearchOutlined />} value={searchText} onChange={handleSearch} />
-        </Col>
-        <Col span={6}>
-          <Button type="primary" size="middle" style={{ marginLeft: "5px" }} onClick={formRender}>
+        <Button type="primary" size="middle" style={{ marginLeft: "5px" }} onClick={formRender}>
             ADD
-          </Button>
-        </Col>
-      </Row>
+         </Button>
         </Col>
       </Row>
       <Modal

@@ -3,6 +3,7 @@ import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 
+
 import { AgGridReact } from "ag-grid-react";
 
 import {
@@ -51,7 +52,6 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
     }
     try {
       await axios.delete(`http://localhost:8080/api/tasks/${taskId}`);
-      alert("Task deleted successfully!");
       fetchTasks(); // Refresh the task list
     } catch (error) {
       console.error("Error deleting task:", error.response?.data || error.message);
@@ -61,11 +61,13 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
 
   //ag-grid
   const columnDefs = [
-    { headerName: "Task Name", field: "taskName", sortable: true, filter: true},
+    { headerName: "Task Name", field: "taskName", sortable: true, filter: true,flex:2},
+
     // { headerName: "Status", field: "status", sortable: true, filter: true },
     {
       headerName: "Status",
       field: "status",
+      flex:0.5,
       sortable: true, filter: true,
       cellRenderer: (params) => {
         const status = params.value;
@@ -90,15 +92,18 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
         return <Tag color={color}>{status}</Tag>;
       }
     },    
-    { headerName: "Business Partner", field: "bp", sortable: true, filter: true },
-    { headerName: "Approved By", field: "approvedBy", sortable: true, filter: true },
-    { headerName: "Due Date", field: "dueDate", sortable: true, filter: "agDateColumnFilter" },
+    { headerName: "Business Partner", field: "bp", sortable: true, filter: true ,flex :1},
+    { headerName: "Approved By", field: "approvedBy", sortable: true, filter: true ,flex :1},
+    { headerName: "Due Date", field: "dueDate", sortable: true, filter: "agDateColumnFilter",flex :1 },
+
 
 
     // { headerName: "Assigned To", field: "assignedTo", sortable: true, filter: true },
     {
       headerName: "Actions", 
       field: "actions", 
+      flex :1,
+
       cellRenderer: (params) => (
         <>
           <Button 
@@ -124,13 +129,14 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
     },
     
   ];
-
-
+  
+  // gridOptions.api.sizeColumnsToFit();
   return (
- <div style={{ textAlign: "center", marginBottom: "10px" }}>
+ <div style={{ textAlign: "left", marginBottom: "10px" }}>
 
 
-      <div className="ag-theme-alpine" style={{ height: 500, width: "96%",margin:"auto"}}>
+      <div className="ag-theme-alpine" style={{ height: 500 , width: "96vw",margin:"auto"}}>
+
         <AgGridReact
           rowData={tasks}
           columnDefs={columnDefs}
@@ -139,7 +145,9 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
           // paginationPageSizeSelector={true}
           paginationPageSizeSelector={[10,20, 50, 100]}
           // suppressPaginationPanel={true} 
-          // domLayout="autoHeight"
+          domLayout="autoHeight"
+          // suppressAutoSize={true}
+
         />
       </div>
 
