@@ -69,10 +69,10 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
   };
 
   return (
-    <Form  layout="horizontal" >
+    <Form  layout="horizontal" onFinish={handleSubmit}>
       <Row>
         <Col span={12}>
-        <Form.Item label="Task Name" required labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
+        <Form.Item label="Task Name" name="taskName" rules={[{ required: true, message: 'Please input your task name' }]} labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
           <Input value={details.taskName} onChange={(e) => handleChange("taskName", e.target.value)} width={"100%"}/>
         </Form.Item>
         </Col>
@@ -130,7 +130,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
 
       <Row >
         <Col span={12}>
-          <Form.Item label="ApprovedBy" labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
+          <Form.Item label="ApprovedBy" name="approvedBy" rules={[{ required: true, message: 'Please input name of approver' }]} labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
             <Input value={details.approvedBy} onChange={(e) => handleChange("approvedBy", e.target.value)} />
           </Form.Item>
         </Col>
@@ -164,7 +164,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
         </Col>
       </Row>
       <Form.Item wrapperCol={{ offset: 10, span: 12 }}>
-        <Button type="primary" onClick={handleSubmit} style={{width:"33.33%"}}>Submit</Button>
+        <Button type="primary" htmlType="submit" style={{width:"33.33%"}}>Submit</Button>
       </Form.Item>
     </Form>
 
