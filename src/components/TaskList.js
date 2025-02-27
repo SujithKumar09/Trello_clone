@@ -1,9 +1,9 @@
-import { Table, Tag, Button, Popconfirm, Tooltip, Input } from "antd";
-import { EditOutlined, DeleteOutlined, SearchOutlined,FunnelPlotOutlined } from "@ant-design/icons";
+import { Table, Tag, Button, Popconfirm, Input } from "antd";
+import { EditOutlined, DeleteOutlined, SearchOutlined,FunnelPlotOutlined, EyeOutlined } from "@ant-design/icons";
 import axios from "axios";
 import "./TaskList.css";
 
-function TaskList({ tasks, onEdit, fetchTasks }) {
+function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
   const handleDelete = async (taskId) => {
     if (!taskId) {
       console.error("Task ID is undefined, cannot delete.");
@@ -36,37 +36,6 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
       ),
       filterIcon: <SearchOutlined style={{ color: "white" }} />,
       onFilter: (value, record) => record.taskName.toLowerCase().includes(value.toLowerCase()),
-      ellipsis: true,
-    },
-    {
-      title: "Task Description",
-      dataIndex: "taskDescription",
-      key: "taskDescription",
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
-        <Input
-          placeholder="Search Task Description"
-          value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => confirm()}
-          style={{  display: "block" }}
-        />
-      ),
-      filterIcon: <SearchOutlined style={{ color: "white" }} />,
-      onFilter: (value, record) => record.taskDescription.toLowerCase().includes(value.toLowerCase()),
-      render: (text) => (
-        <Tooltip title={text}>
-         <div
-        style={{
-          maxWidth: "150px", // Set a fixed width to prevent column expansion
-          whiteSpace: "nowrap", // Prevents text from wrapping
-          overflow: "hidden", // Hides overflowing text
-          textOverflow: "ellipsis", // Adds "..." for overflowed text
-        }}
-      >
-        {text}
-      </div>
-        </Tooltip>
-      ),
       ellipsis: true,
     },
     {
@@ -104,7 +73,6 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
         return <Tag color={color}>{status}</Tag>;
       },
     },
-    { title: "Created Date", dataIndex: "dateCreated", key: "dateCreated" },
     { title: "Business Partner", dataIndex: "bp", key: "bp",
 
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
@@ -119,8 +87,19 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
       filterIcon: <SearchOutlined style={{ color: "white" }} />,
       onFilter: (value, record) => record.bp.toLowerCase().includes(value.toLowerCase()),
     },
-    { title: "Dev Hours", dataIndex: "devHours", key: "devHours" },
-    { title: "QA Hours", dataIndex: "qaHours", key: "qaHours" },
+    { title: "Client Name", dataIndex: "clientName", key: "clientName",
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
+        <Input
+          placeholder="Search Client Name"
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => confirm()}
+          style={{  display: "block" }}
+        />
+      ),
+      filterIcon: <SearchOutlined style={{ color: "white" }} />,
+      onFilter: (value, record) => record.assignedTo.toLowerCase().includes(value.toLowerCase()),
+     },
     { title: "Approved By", dataIndex: "approvedBy", key: "approvedBy",
 
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
@@ -137,19 +116,6 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
       
     },
     { title: "Due Date", dataIndex: "dueDate", key: "dueDate" },
-    { title: "Assigned To", dataIndex: "assignedTo", key: "assignedTo",
-      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
-        <Input
-          placeholder="Search Assigned To"
-          value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => confirm()}
-          style={{  display: "block" }}
-        />
-      ),
-      filterIcon: <SearchOutlined style={{ color: "white" }} />,
-      onFilter: (value, record) => record.assignedTo.toLowerCase().includes(value.toLowerCase()),
-     },
     { title: "Release Date", dataIndex: "releaseDate", key: "releaseDate" },
     {
       title: "Actions",
@@ -160,6 +126,7 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
           <Popconfirm title="Delete this task?" onConfirm={() => handleDelete(record.id)} okText="Yes" cancelText="No">
             <Button type="link" icon={<DeleteOutlined />} danger />
           </Popconfirm>
+          <Button type="link" icon={<EyeOutlined/>} onClick={()=>onShowMore(record)}/>
         </>
       ),
     },
@@ -167,7 +134,6 @@ function TaskList({ tasks, onEdit, fetchTasks }) {
 
   return (
     <div>
-      <h2>Task List</h2>
       <Table
         dataSource={tasks}
         columns={columns}
