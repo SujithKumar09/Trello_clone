@@ -69,7 +69,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
   };
 
   return (
-    <Form  layout="horizontal" onFinish={handleSubmit}>
+    <Form  layout="horizontal" onFinish={handleSubmit} >
       <Row>
         <Col span={12}>
         <Form.Item label="Task Name" name="taskName" rules={[{ required: true, message: 'Please input your task name' }]} labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
