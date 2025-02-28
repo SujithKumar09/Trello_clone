@@ -222,13 +222,13 @@ const DetailedForm = () => {
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="Due Date" rules={[{ type: 'date', message: 'Please enter a valid date' },]}>
-            <DatePicker onChange={(date) => handleChange("dueDate", date)} format={{format: 'YYYY-MM-DD',type: 'mask',}}/>
+          <Form.Item name="dueDate" label="Due Date">
+            <DatePicker onChange={(date) => handleChange('dueDate', date)} format='YYYY-MM-DD'/>
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="Release Date" rules={[{ type: 'date', message: 'Please enter a valid date' },]}>
-            <DatePicker onChange={(date) => handleChange("releaseDate", date)} format={{format: 'YYYY-MM-DD',type: 'mask',}}/>
+          <Form.Item name="releaseDate" label="Release Date">
+            <DatePicker onChange={(date) => handleChange('releaseDate', date)} format='YYYY-MM-DD'/>
           </Form.Item>
         </Col>
       </Row>

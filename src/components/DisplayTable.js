@@ -61,36 +61,48 @@ const DisplayTable = () => {
     }},
     {headerName : "Business Partner", field:"bp", flex : 1, sortable : true,filter: true},
     {headerName : "Client Name", field:"clientName", flex : 1, sortable : true,filter: true},
+    {headerName : "Created Date" ,field : "dateCreated", flex : 1, sortable : true,filter: true},
     {headerName : "Due Date" ,field : "dueDate", flex : 1, sortable : true,filter: true},
-    {headerName : "Actions", field : "actions", flex : 1, cellRenderer : (params)=>{
-      return (
-      <Flex gap="small">
-        <Button icon={<EditOutlined />} onClick={() => handleEdit(params.data)} />
-        <Popconfirm
-          title="Are you sure delete this task?"
-          onConfirm={() => handleDelete(params.data.id)}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button icon={<DeleteOutlined />} danger />
-        </Popconfirm>
-        <Button icon={<EyeOutlined />} onClick={() => handleShowMore(params.data)} />
-      </Flex>
-    )}},
+    {headerName : "Actions", field : "actions", flex : 1,
+
+
+      cellRenderer: (params) => (
+        <Flex gap="small">
+          <Button 
+            type="link" 
+            icon={<EditOutlined />} 
+            onClick={() => handleEdit(params.data)} 
+          />
+          <Popconfirm 
+            title="Delete this task?" 
+            onConfirm={() => handleDelete(params.data.id)} 
+            okText="Yes" 
+            cancelText="No"
+          >
+            <Button 
+              type="link" 
+              icon={<DeleteOutlined />} 
+              danger 
+            />
+          </Popconfirm>
+          <Button type="link" icon={<EyeOutlined/>} onClick={()=>handleShowMore(params.data)}/>
+        </Flex>
+      ),},
   ];
 
   if (status === 'loading') return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <AgGridReact 
-      columnDefs={columnDefs}
-      rowData={tasks}
-      pagination={true}
-      paginationPageSizeSelector={[10,20, 50, 100]}
-      domLayout='autoHeight'
-    />
-    
+    <div style={{textAlign:"left"}}>
+      <AgGridReact 
+        columnDefs={columnDefs}
+        rowData={tasks}
+        pagination={true}
+        paginationPageSizeSelector={[10,20, 50, 100]}
+        domLayout='autoHeight'
+      />
+    </div>
   );
 };
 

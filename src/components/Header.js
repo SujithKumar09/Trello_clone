@@ -25,8 +25,8 @@ const Header = () => {
 
   return (
     <div>
-        <Row>
-          <Col span={18}>
+        <Row style={{alignItems:"center",margin:"1em 1em",textAlign:"left"}}>
+          <Col span={10}>
             <Input className="inputStyle" placeholder="Search" prefix={<SearchOutlined />} />
           </Col>
           <Col span={6}>
