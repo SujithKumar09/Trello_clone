@@ -1,15 +1,14 @@
-import { Form, Select, Input, DatePicker, InputNumber, Radio, Button } from 'antd';
+import { Form, Select, Input, DatePicker, InputNumber, Radio, Button, Row, Col } from 'antd';
 import moment from 'moment';
 import TextArea from 'antd/es/input/TextArea';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { setFormData, editTask, addTask} from './taskSlice';
-import { setModalOpen } from './taskSlice'; 
+import { setFormData, editTask, addTask, setModalOpen, resetFormData } from './taskSlice';
 
 const DetailedForm = () => {
   const dispatch = useDispatch();
-  const { data,isModalOpen, isEditMode } = useSelector((state) => state.tasks.form);
-  const [form]=Form.useForm();
+  const { data, isModalOpen, isEditMode } = useSelector((state) => state.tasks.form);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     if (isModalOpen) {
@@ -20,136 +19,218 @@ const DetailedForm = () => {
         releaseDate: data.releaseDate ? moment(data.releaseDate) : null,
       });
     }
-  }, [isModalOpen,data,form]);
+  }, [isModalOpen, data, form]);
 
   const handleChange = (fieldName, value) => {
-    const newValue = moment.isMoment(value) ? value.format('YYYY-MM-DD') : value;
-    dispatch(setFormData({ ...data, [fieldName]: newValue }));  
+    let newValue = value;
+    if (moment.isMoment(value)) {
+      newValue = value.format('YYYY-MM-DD');
+    } else if (value === null || value === undefined) {
+      newValue = null; 
+    }
+    dispatch(setFormData({ ...data, [fieldName]: newValue }));
   };
 
   const handleSubmit = () => {
-    if (isEditMode) {
-      dispatch(editTask(data));
-    } else {
-      dispatch(addTask(data));
-    }
-    dispatch(setModalOpen(false));
-      
+    form
+      .validateFields()
+      .then((values) => {
+        const updatedData = {
+          ...data,
+          ...values,
+          dateCreated: values.dateCreated && moment.isMoment(values.dateCreated) ? values.dateCreated.format('YYYY-MM-DD') : values.dateCreated,
+          // dueDate: values.dueDate && moment.isMoment(values.dueDate) ? values.dueDate.format('YYYY-MM-DD') : values.dueDate,
+          // releaseDate: values.releaseDate && moment.isMoment(values.releaseDate) ? values.releaseDate.format('YYYY-MM-DD') : values.releaseDate,
+        };
+        if (isEditMode) {
+          dispatch(editTask(updatedData));
+        } else {
+          dispatch(addTask(updatedData));
+        }
+        dispatch(setModalOpen(false));
+        dispatch(resetFormData());
+        form.resetFields();
+      })
+      .catch((info) => {
+        console.log('Validation Failed:', info);
+      });
   };
 
   return (
     <Form
       form={form}
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
       layout="horizontal"
-      style={{ maxWidth: 700 }}
-      labelAlign="left"
       onFinish={handleSubmit}
       initialValues={data}
     >
-      <Form.Item label="Task Name" name="taskName" rules={[{ required: true, message: 'Please input your task name' }]}>
-        <Input
-          value={data.taskName}
-          name="taskName"
-          placeholder="Enter Task Name"
-          onChange={(e) => handleChange('taskName', e.target.value)}
-        />
-      </Form.Item>
-      <Form.Item label="Task Description" name="taskDescription">
-        <TextArea
-          value={data.taskDescription}
-          placeholder="Enter Task Description"
-          onChange={(e) => handleChange('taskDescription', e.target.value)}
-        />
-      </Form.Item>
-      <Form.Item label="Status">
-        <Select value={data.status} onChange={(value) => handleChange('status', value)}>
-          <Select.Option value="Not Started">Not Started</Select.Option>
-          <Select.Option value="On Going">On Going</Select.Option>
-          <Select.Option value="Completed">Completed</Select.Option>
-          <Select.Option value="On Hold">On Hold</Select.Option>
-        </Select>
-      </Form.Item>
-      <Form.Item label="Created Date" name="dateCreated" rules={[{ required: true, message: 'Please input the created date' }]}>
-        <DatePicker
-          value={data.dateCreated ? moment(data.dateCreated) : null}
-          onChange={(date, dateString) => handleChange('dateCreated', dateString)}
-          format="YYYY-MM-DD"
-        />
-      </Form.Item>
-      <Form.Item label="BP" name="bp" rules={[{ required: true, message: 'Enter name of BP' }]}>
-        <Input
-          value={data.bp}
-          name="bp"
-          placeholder="Enter name of BP"
-          onChange={(e) => handleChange('bp', e.target.value)}
-        />
-      </Form.Item>
-      <Form.Item label="Client Name" name="clientName">
-        <Input
-          value={data.clientName}
-          name="clientName"
-          placeholder="Enter name of Client"
-          onChange={(e) => handleChange('clientName', e.target.value)}
-        />
-      </Form.Item>
-      <Form.Item label="Dev Hours" name="devHours" rules={[{ type: 'number', min: 0, message: 'Dev hours cannot be negative' }]}>
-        <InputNumber
-          value={data.devHours}
-          name="devHours"
-          placeholder="Enter No of Dev Hours"
-          onChange={(value) => handleChange('devHours', value)}
-          style={{ width: '100%' }}
-        />
-      </Form.Item>
-      <Form.Item label="QA Hours" name="qaHours" rules={[{ type: 'number', min: 0, message: 'QA hours cannot be negative' }]}>
-        <InputNumber
-          value={data.qaHours}
-          name="qaHours"
-          placeholder="Enter No of QA Hours"
-          onChange={(value) => handleChange('qaHours', value)}
-          style={{ width: '100%' }}
-        />
-      </Form.Item>
-      <Form.Item label="Approved By" name="approvedBy" rules={[{ required: true, message: 'Name of approved person' }]}>
-        <Input
-          value={data.approvedBy}
-          name="approvedBy"
-          placeholder="Enter Approved Person Name"
-          onChange={(e) => handleChange('approvedBy', e.target.value)}
-        />
-      </Form.Item>
-      <Form.Item label="Billable or Not" name="isBillable" rules={[{ required: true, message: 'Please select whether the task is billable!' }]}>
-        <Radio.Group value={data.isBillable} onChange={(e) => handleChange('isBillable', e.target.value)}>
-          <Radio value={true}>Yes</Radio>
-          <Radio value={false}>No</Radio>
-        </Radio.Group>
-      </Form.Item>
-      <Form.Item label="Due Date" name="dueDate">
-        <DatePicker
-          value={data.dueDate ? moment(data.dueDate) : null}
-          onChange={(date, dateString) => handleChange('dueDate', dateString)}
-          format="YYYY-MM-DD"
-        />
-      </Form.Item>
-      <Form.Item label="Assigned To" name="assignedTo">
-        <Input
-          value={data.assignedTo}
-          name="assignedTo"
-          placeholder="Enter Assigned Person Name"
-          onChange={(e) => handleChange('assignedTo', e.target.value)}
-        />
-      </Form.Item>
-      <Form.Item label="Release Date" name="releaseDate">
-        <DatePicker
-          value={data.releaseDate ? moment(data.releaseDate) : null}
-          onChange={(date, dateString) => handleChange('releaseDate', dateString)}
-          format="YYYY-MM-DD"
-        />
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+      <Row>
+        <Col span={12}>
+          <Form.Item
+            label="Task Name"
+            name="taskName"
+            rules={[{ required: true, message: 'Please input your task name' }]}
+            labelCol={{ span: 9 }}
+            wrapperCol={{ span: 14 }}
+            labelAlign="left"
+          >
+            <Input
+              onChange={(e) => handleChange('taskName', e.target.value)}
+            />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            label="Task Description"
+            name="taskDescription"
+            labelCol={{ span: 9 }}
+            wrapperCol={{ span: 15 }}
+            labelAlign="left"
+          >
+            <TextArea
+              rows={2}
+              onChange={(e) => handleChange('taskDescription', e.target.value)}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={12}>
+          <Form.Item
+            label="Status"
+            name="status"
+            labelCol={{ span: 9 }}
+            wrapperCol={{ span: 14 }}
+            labelAlign="left"
+          >
+            <Select onChange={(value) => handleChange('status', value)}>
+              <Select.Option value="Not Started">Not Started</Select.Option>
+              <Select.Option value="On Going">On Going</Select.Option>
+              <Select.Option value="On Hold">On Hold</Select.Option>
+              <Select.Option value="Completed">Completed</Select.Option>
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            label="Created Date"
+            name="dateCreated"
+            rules={[{ required: true, message: 'Please input the created date' }]}
+            labelCol={{ span: 9 }}
+            wrapperCol={{ span: 15 }}
+            labelAlign="left"
+          >
+            <DatePicker
+              onChange={(date) => handleChange('dateCreated', date)}
+              format="YYYY-MM-DD"
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={12}>
+          <Form.Item
+            label="Business Partner"
+            name="bp"
+            labelCol={{ span: 9 }}
+            wrapperCol={{ span: 14 }}
+            labelAlign="left"
+          >
+            <Input onChange={(e) => handleChange('bp', e.target.value)} />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            label="Client Name"
+            name="clientName"
+            labelCol={{ span: 9 }}
+            wrapperCol={{ span: 15 }}
+            labelAlign="left"
+          >
+            <Input onChange={(e) => handleChange('clientName', e.target.value)} />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={12}>
+          <Form.Item
+            label="Development Hours"
+            name="devHours"
+            labelCol={{ span: 9 }}
+            wrapperCol={{ span: 14 }}
+            labelAlign="left"
+          >
+            <InputNumber
+              min={0}
+              onChange={(value) => handleChange('devHours', value)}
+              style={{ width: '100%' }}
+            />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            label="QA Hours"
+            name="qaHours"
+            labelCol={{ span: 9 }}
+            wrapperCol={{ span: 15 }}
+            labelAlign="left"
+          >
+            <InputNumber
+              min={0}
+              onChange={(value) => handleChange('qaHours', value)}
+              style={{ width: '100%' }}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={12}>
+          <Form.Item
+            label="Approved By"
+            name="approvedBy"
+            rules={[{ required: true, message: 'Please input name of approver' }]}
+            labelCol={{ span: 9 }}
+            wrapperCol={{ span: 14 }}
+            labelAlign="left"
+          >
+            <Input onChange={(e) => handleChange('approvedBy', e.target.value)} />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            label="Assigned To"
+            name="assignedTo"
+            labelCol={{ span: 9 }}
+            wrapperCol={{ span: 15 }}
+            labelAlign="left"
+          >
+            <Input onChange={(e) => handleChange('assignedTo', e.target.value)} />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={8}>
+          <Form.Item label="Billable" name="isBillable">
+            <Radio.Group
+              onChange={(e) => handleChange('isBillable', e.target.value)}
+            >
+              <Radio value={true}>Yes</Radio>
+              <Radio value={false}>No</Radio>
+            </Radio.Group>
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item label="Due Date">
+            <DatePicker onChange={(date) => handleChange("dueDate", date)} />
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item label="Release Date">
+            <DatePicker onChange={(date) => handleChange("releaseDate", date)} />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Form.Item wrapperCol={{ offset: 10, span: 12 }}>
+        <Button type="primary" htmlType="submit" style={{ width: '33.33%' }}>
           Submit
         </Button>
       </Form.Item>

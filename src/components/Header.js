@@ -40,6 +40,7 @@ const Header = () => {
           open={isModalOpen}
           onCancel={handleCancel}
           footer={null}
+          width="60%"
         >
           <DetailedForm />
         </Modal>
