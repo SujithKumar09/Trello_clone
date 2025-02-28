@@ -6,6 +6,7 @@ const initialFormData = {
   status: 'Not Started',
   dateCreated: null,
   bp: '',
+  clientName: '',
   devHours: 0,
   qaHours: 0,
   approvedBy: '',
@@ -58,6 +59,9 @@ const tasksSlice = createSlice({
       isModalOpen: false,
       isEditMode: false,
     },
+    card : {
+      details : {}
+    }
   },
   reducers: {
     setFormData: (state, action) => {
@@ -72,6 +76,9 @@ const tasksSlice = createSlice({
     setEditMode: (state, action) => {
       state.form.isEditMode = action.payload;
     },
+    setCardData: (state, action) => {
+      state.card.details = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -104,6 +111,6 @@ const tasksSlice = createSlice({
   },
 });
 
-export const { setFormData, resetFormData, setModalOpen, setEditMode } = tasksSlice.actions;
+export const { setFormData, resetFormData, setModalOpen, setEditMode,setCardData } = tasksSlice.actions;
 
 export default tasksSlice.reducer;

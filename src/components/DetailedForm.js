@@ -28,26 +28,13 @@ const DetailedForm = () => {
   };
 
   const handleSubmit = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        const updatedData = {
-          ...data,
-          ...values,
-          dateCreated: values.dateCreated ? values.dateCreated.format('YYYY-MM-DD') : null,
-          dueDate: values.dueDate ? values.dueDate.format('YYYY-MM-DD') : null,
-          releaseDate: values.releaseDate ? values.releaseDate.format('YYYY-MM-DD') : null,
-        };
-        if (isEditMode) {
-          dispatch(editTask(updatedData));
-        } else {
-          dispatch(addTask(updatedData));
-        }
-        dispatch(setModalOpen(false));
-      })
-      .catch((info) => {
-        console.log('Validation Failed:', info);
-      });
+    if (isEditMode) {
+      dispatch(editTask(data));
+    } else {
+      dispatch(addTask(data));
+    }
+    dispatch(setModalOpen(false));
+      
   };
 
   return (
@@ -97,6 +84,14 @@ const DetailedForm = () => {
           name="bp"
           placeholder="Enter name of BP"
           onChange={(e) => handleChange('bp', e.target.value)}
+        />
+      </Form.Item>
+      <Form.Item label="Client Name" name="clientName">
+        <Input
+          value={data.clientName}
+          name="clientName"
+          placeholder="Enter name of Client"
+          onChange={(e) => handleChange('clientName', e.target.value)}
         />
       </Form.Item>
       <Form.Item label="Dev Hours" name="devHours" rules={[{ type: 'number', min: 0, message: 'Dev hours cannot be negative' }]}>
