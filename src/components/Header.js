@@ -103,12 +103,13 @@ const Header = () => {
 
   return (
     <div>
-      <Row style={{alignItems:"center", margin:"1em 1em"}}>
-        <Col span={18}>
+      <Row style={{alignItems:"center", margin:"1em 1em",textAlign:"left"}}>
+        <Col span={9}>
           <Input className="inputStyle" placeholder="Search" prefix={<SearchOutlined />} value={searchText} onChange={handleSearch} />
         </Col>
+        <Col span={1}></Col>
         <Col span={6}>
-        <Button type="primary" size="middle" style={{ marginLeft: "5px" }} onClick={formRender}>
+        <Button type="primary" size="middle" onClick={formRender}>
             ADD
          </Button>
         </Col>

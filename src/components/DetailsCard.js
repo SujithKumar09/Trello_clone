@@ -7,13 +7,13 @@ const DetailsCard = ({ details }) => {
             color = "green";
             break;
         case "On Going":
-            color = "blue";
-            break;
-        case "Not Started":
             color = "orange";
             break;
-        case "On Hold":
+        case "Not Started":
             color = "red";
+            break;
+        case "On Hold":
+            color = "geekblue";
             break;
         default:
             color =
