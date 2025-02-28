@@ -69,6 +69,7 @@ const Header = () => {
   };
 
   const handleEdit = (task) => {
+    console.log(task.taskName);
     setEditingTask(task); // Set the selected task for editing
     setisModalOpen(true);
   };

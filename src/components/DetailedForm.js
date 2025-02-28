@@ -23,9 +23,11 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
     releaseDate: "",
   });
 
+  
   useEffect(() => {
-    console.log(editingTask)
+   
     if (editingTask!=null) {
+      console.log(editingTask.taskName)
       setDetails({
         ...editingTask,
         dueDate: editingTask.dueDate ? moment(editingTask.dueDate) : null, 
@@ -69,13 +71,18 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
   };
 
   return (
-    <Form  layout="horizontal" onFinish={handleSubmit}>
+    <Form  layout="horizontal" onFinish={handleSubmit} >
       <Row>
-        <Col span={12}>
+        {/* <Col span={12}>
         <Form.Item label="Task Name" name="taskName" rules={[{ required: true, message: 'Please input your task name' }]} labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
 
           <Input value={details.taskName} onChange={(e) => handleChange("taskName", e.target.value)} width={"100%"}/>
         </Form.Item>
+        </Col> */}
+        <Col span={12}>
+          <Form.Item label="Task Name"  labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
+            <Input value={details.taskName} onChange={(e) => handleChange("taskName", e.target.value)} required/>
+          </Form.Item>
         </Col>
         <Col span={12}>
         <Form.Item label="Task Description" labelCol={{ span: 9 }} wrapperCol={{ span: 15 }} labelAlign="left">
@@ -95,11 +102,12 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
           </Form.Item>
           </Col>
           <Col span={12}>
-          <Form.Item label="Created Date" name="dateCreated" rules={[{ required: true, message: 'Please input the created date' }]} labelCol={{ span: 9 }} wrapperCol={{ span: 15 }} labelAlign="left">
+          <Form.Item label="Created Date"   labelCol={{ span: 9 }} wrapperCol={{ span: 15 }} labelAlign="left">
             <DatePicker
               value={details.dateCreated ? moment(details.dateCreated) : null}
               onChange={(date, dateString) => handleChange('dateCreated', dateString)}
               format="YYYY-MM-DD"
+              required
             />
           </Form.Item>
           </Col>
@@ -131,9 +139,9 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
 
       <Row >
         <Col span={12}>
-          <Form.Item label="ApprovedBy" name="approvedBy" rules={[{ required: true, message: 'Please input name of approver' }]} labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
+          <Form.Item label="ApprovedBy"  labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
 
-            <Input value={details.approvedBy} onChange={(e) => handleChange("approvedBy", e.target.value)} />
+            <Input value={details.approvedBy} onChange={(e) => handleChange("approvedBy", e.target.value)}  required/>
           </Form.Item>
         </Col>
         <Col span={12}>
