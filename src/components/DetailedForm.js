@@ -23,10 +23,8 @@ const DetailedForm = () => {
 
   const handleChange = (fieldName, value) => {
     let newValue = value;
-    if (moment.isMoment(value)) {
-      newValue = value.format('YYYY-MM-DD');
-    } else if (value === null || value === undefined) {
-      newValue = null; 
+    if (fieldName === "dateCreated" || fieldName === "dueDate" || fieldName === "releaseDate") {
+      newValue = value ? value.format('YYYY-MM-DD') : null;
     }
     dispatch(setFormData({ ...data, [fieldName]: newValue }));
   };
@@ -39,8 +37,8 @@ const DetailedForm = () => {
           ...data,
           ...values,
           dateCreated: values.dateCreated && moment.isMoment(values.dateCreated) ? values.dateCreated.format('YYYY-MM-DD') : values.dateCreated,
-          // dueDate: values.dueDate && moment.isMoment(values.dueDate) ? values.dueDate.format('YYYY-MM-DD') : values.dueDate,
-          // releaseDate: values.releaseDate && moment.isMoment(values.releaseDate) ? values.releaseDate.format('YYYY-MM-DD') : values.releaseDate,
+          dueDate: values.dueDate && moment.isMoment(values.dueDate) ? values.dueDate.format('YYYY-MM-DD') : values.dueDate,
+          releaseDate: values.releaseDate && moment.isMoment(values.releaseDate) ? values.releaseDate.format('YYYY-MM-DD') : values.releaseDate,
         };
         if (isEditMode) {
           dispatch(editTask(updatedData));
@@ -61,7 +59,6 @@ const DetailedForm = () => {
       form={form}
       layout="horizontal"
       onFinish={handleSubmit}
-      initialValues={data}
     >
       <Row>
         <Col span={12}>
@@ -114,14 +111,20 @@ const DetailedForm = () => {
           <Form.Item
             label="Created Date"
             name="dateCreated"
-            rules={[{ required: true, message: 'Please input the created date' }]}
+            rules={[
+              { required: true, message: 'Please input the created date' },
+              { type: 'date', message: 'Please enter a valid date' }
+            ]}
             labelCol={{ span: 9 }}
             wrapperCol={{ span: 15 }}
             labelAlign="left"
           >
             <DatePicker
               onChange={(date) => handleChange('dateCreated', date)}
-              format="YYYY-MM-DD"
+              format={{
+                format: 'YYYY-MM-DD',
+                type: 'mask',
+              }}
             />
           </Form.Item>
         </Col>
@@ -219,13 +222,13 @@ const DetailedForm = () => {
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="Due Date">
-            <DatePicker onChange={(date) => handleChange("dueDate", date)} />
+          <Form.Item label="Due Date" rules={[{ type: 'date', message: 'Please enter a valid date' },]}>
+            <DatePicker onChange={(date) => handleChange("dueDate", date)} format={{format: 'YYYY-MM-DD',type: 'mask',}}/>
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="Release Date">
-            <DatePicker onChange={(date) => handleChange("releaseDate", date)} />
+          <Form.Item label="Release Date" rules={[{ type: 'date', message: 'Please enter a valid date' },]}>
+            <DatePicker onChange={(date) => handleChange("releaseDate", date)} format={{format: 'YYYY-MM-DD',type: 'mask',}}/>
           </Form.Item>
         </Col>
       </Row>

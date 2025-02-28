@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Tag, Button, Popconfirm, Flex } from 'antd';
 import { DeleteOutlined, EditOutlined ,EyeOutlined} from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { setEditMode, setFormData, setModalOpen, fetchTasks, deleteTask  , setCardData, resetFormData} from './taskSlice';
+import { setEditMode, setFormData, setModalOpen, fetchTasks, deleteTask  , setCardData} from './taskSlice';
 import { AgGridReact } from 'ag-grid-react';
 
 import {
@@ -40,9 +40,8 @@ const DisplayTable = () => {
   };
 
   const handleEdit = (record) => {
-    dispatch(resetFormData());
-    dispatch(setFormData(record));
     dispatch(setEditMode(true)); 
+    dispatch(setFormData(record));
     dispatch(setModalOpen(true)); 
   };
 
@@ -84,7 +83,6 @@ const DisplayTable = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    // <Table columns={columns} dataSource={tasks} rowKey="id" pagination={{ pageSize: 8 }} />
     <AgGridReact 
       columnDefs={columnDefs}
       rowData={tasks}
