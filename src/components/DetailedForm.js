@@ -7,6 +7,8 @@ const { Option } = Select;
 
 const DetailedForm = ({ onFormSubmit, editingTask }) => {
 
+  const [form] = Form.useForm();
+
   const [details, setDetails] = useState({
     taskName: "",
     taskDescription: "",
@@ -32,6 +34,13 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
       releaseDate: editingTask.releaseDate ? moment(editingTask.releaseDate) : null,
       dateCreated: editingTask.dateCreated ? moment(editingTask.dateCreated):null
       });
+      form.setFieldsValue
+      ({
+        ...editingTask,
+        dueDate: editingTask.dueDate ? moment(editingTask.dueDate) : null, 
+      releaseDate: editingTask.releaseDate ? moment(editingTask.releaseDate) : null,
+      dateCreated: editingTask.dateCreated ? moment(editingTask.dateCreated):null
+      });
     }else {
       setDetails({
         taskName: "",
@@ -50,7 +59,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
       });
     }
   
-  }, [editingTask,onFormSubmit]);
+  }, [editingTask,onFormSubmit,form]);
 
  
   const handleChange = (key, value) => {
@@ -69,7 +78,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
   };
 
   return (
-    <Form  layout="horizontal" onFinish={handleSubmit} >
+    <Form form={form} layout="horizontal" onFinish={handleSubmit} >
       <Row>
         <Col span={12}>
         <Form.Item label="Task Name" name="taskName" rules={[{ required: true, message: 'Please input your task name' }]} labelCol={{ span: 9 }} wrapperCol={{ span: 14 }} labelAlign="left">
