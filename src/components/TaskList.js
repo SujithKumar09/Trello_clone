@@ -22,21 +22,21 @@ import {
 } from "ag-grid-community";
 
 
-import {
-  ColumnMenuModule,
-  ColumnsToolPanelModule,
-  ContextMenuModule,
-  RowGroupingModule,
-} from "ag-grid-enterprise";
+// import {
+//   ColumnMenuModule,
+//   ColumnsToolPanelModule,
+//   ContextMenuModule,
+//   RowGroupingModule,
+// } from "ag-grid-enterprise";
 
 ModuleRegistry.registerModules([
   TextFilterModule,
   PinnedRowModule,
   ClientSideRowModelModule,
-  ColumnsToolPanelModule,
-  ColumnMenuModule,
-  ContextMenuModule,
-  RowGroupingModule,
+  // ColumnsToolPanelModule,
+  // ColumnMenuModule,
+  // ContextMenuModule,
+  // RowGroupingModule,
   NumberFilterModule,
   ValidationModule,
   DateFilterModule ,

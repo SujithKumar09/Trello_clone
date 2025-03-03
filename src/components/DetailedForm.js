@@ -26,7 +26,6 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
   });
 
   useEffect(() => {
-    console.log(editingTask)
     if (editingTask!=null) {
       setDetails({
         ...editingTask,
