@@ -38,13 +38,15 @@ const Header = () => {
         await axios.put(`http://localhost:8080/api/tasks/${editingTask.id}`, data, {
           headers: { "Content-Type": "application/json" },
         });
-        alert("Task updated successfully!");
+        console.log("Task updated successfully!");
+        // alert("Task updated successfully!");
       } else {
         // Create new task
         await axios.post("http://localhost:8080/api/tasks", data, {
           headers: { "Content-Type": "application/json" },
         });
-        alert("Task saved successfully!");
+        console.log("Task saved successfully!");
+        // alert("Task saved successfully!");
       }
       fetchTasks(); // Refresh the task list
     } catch (error) {

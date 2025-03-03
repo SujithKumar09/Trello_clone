@@ -58,6 +58,7 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
     try {
       await axios.delete(`http://localhost:8080/api/tasks/${taskId}`);
       fetchTasks(); // Refresh the task list
+      console.log("Task deleted Successfully!");
     } catch (error) {
       console.error("Error deleting task:", error.response?.data || error.message);
       alert("Failed to delete task!");

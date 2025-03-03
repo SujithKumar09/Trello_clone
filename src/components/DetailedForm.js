@@ -35,11 +35,13 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
       });
       form.setFieldsValue
       ({
-        ...editingTask,
-        dueDate: editingTask.dueDate ? moment(editingTask.dueDate) : null, 
-      releaseDate: editingTask.releaseDate ? moment(editingTask.releaseDate) : null,
+        // ...editingTask,
+        // dueDate: editingTask.dueDate ? moment(editingTask.dueDate) : null, 
+      // releaseDate: editingTask.releaseDate ? moment(editingTask.releaseDate) : null,
+       taskName:editingTask.taskName,
+       approvedBy:editingTask.approvedBy,
       dateCreated: editingTask.dateCreated ? moment(editingTask.dateCreated):null
-      });
+      }); 
     }else {
       setDetails({
         taskName: "",
@@ -56,8 +58,14 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
         assignedTo: "",
         releaseDate: null,
       });
+      form.setFieldsValue
+      ({
+         taskName:"",
+         dateCreated:null,
+         approvedBy:"",
+      });
     }
-  
+    
   }, [editingTask,onFormSubmit,form]);
 
  
