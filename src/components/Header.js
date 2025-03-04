@@ -3,19 +3,19 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Button, Row,Col, Input, Modal } from "antd";
 import DetailedForm from "./DetailedForm";
 import axios from "axios";
-import TaskList from "./TaskList"; // Import TaskList
+import TaskList from "./TaskList"; 
 import "./Header.css";
 import DetailsCard from "./DetailsCard";
 
 const Header = () => {
   const [isModalOpen, setisModalOpen] = useState(false);
-  const [tasks, setTasks] = useState([]); // State for tasks
+  const [tasks, setTasks] = useState([]); 
   const [editingTask, setEditingTask] = useState(null); 
-  const [filteredTasks, setFilteredTasks] = useState([]); // State for filtered tasks
+  const [filteredTasks, setFilteredTasks] = useState([]); 
   const [searchText, setSearchText] = useState("");
   const [showMoreDetails, setShowMoreDetails] = useState(null);
 
-  // Fetch tasks from the backend
+  
   const fetchTasks = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/tasks");
@@ -25,7 +25,7 @@ const Header = () => {
     }
   };
 
-//to retrieve all tasks
+
   useEffect(() => {
     fetchTasks();
   }, []);
@@ -34,21 +34,21 @@ const Header = () => {
     
     try {
       if (editingTask) {
-        // Update existing task
+        
         await axios.put(`http://localhost:8080/api/tasks/${editingTask.id}`, data, {
           headers: { "Content-Type": "application/json" },
         });
         console.log("Task updated successfully!");
-        // alert("Task updated successfully!");
+        
       } else {
-        // Create new task
+        
         await axios.post("http://localhost:8080/api/tasks", data, {
           headers: { "Content-Type": "application/json" },
         });
         console.log("Task saved successfully!");
-        // alert("Task saved successfully!");
+        
       }
-      fetchTasks(); // Refresh the task list
+      fetchTasks(); 
     } catch (error) {
       console.error("Error saving/updating task:", error.response?.data || error.message);
       alert("Failed to save/update task!");
@@ -59,7 +59,7 @@ const Header = () => {
   };
 
   const formRender = () => {
-    setEditingTask(null); // Reset edit state
+    setEditingTask(null); 
     setisModalOpen(true);
   };
 
@@ -70,7 +70,7 @@ const Header = () => {
   };
 
   const handleEdit = (task) => {
-    setEditingTask(task); // Set the selected task for editing
+    setEditingTask(task);
     setisModalOpen(true);
   };
 
