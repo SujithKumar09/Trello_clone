@@ -2,9 +2,6 @@ import { Button, Popconfirm, Tag } from "antd";
 import { EditOutlined, DeleteOutlined, EyeOutlined} from "@ant-design/icons";
 import axios from "axios";
 
-// import "./TaskList.css";
-// import { useState } from "react";
-// import { useEffect,useRef } from "react";
 
 
 import { AgGridReact } from "ag-grid-react";
@@ -22,21 +19,10 @@ import {
 } from "ag-grid-community";
 
 
-// import {
-//   ColumnMenuModule,
-//   ColumnsToolPanelModule,
-//   ContextMenuModule,
-//   RowGroupingModule,
-// } from "ag-grid-enterprise";
-
 ModuleRegistry.registerModules([
   TextFilterModule,
   PinnedRowModule,
   ClientSideRowModelModule,
-  // ColumnsToolPanelModule,
-  // ColumnMenuModule,
-  // ContextMenuModule,
-  // RowGroupingModule,
   NumberFilterModule,
   ValidationModule,
   DateFilterModule ,
@@ -57,7 +43,7 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
     }
     try {
       await axios.delete(`http://localhost:8080/api/tasks/${taskId}`);
-      fetchTasks(); // Refresh the task list
+      fetchTasks();
       console.log("Task deleted Successfully!");
     } catch (error) {
       console.error("Error deleting task:", error.response?.data || error.message);
@@ -65,11 +51,10 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
     }
   };
 
-  //ag-grid
+
   const columnDefs = [
 
     { headerName: "Task Name", field: "taskName", sortable: true, filter: true,flex:2,tooltipField: "taskName", },
-    // { headerName: "Status", field: "status", sortable: true, filter: true },
     {
       headerName: "Status",
       field: "status",
@@ -98,12 +83,11 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
         return <Tag color={color}>{status}</Tag>;
       }
     },    
-    { headerName: "Business Partner", field: "bp", sortable: true, filter: true ,flex :1},
-    { headerName: "Approved By", field: "approvedBy", sortable: true, filter: true ,flex :1},
+    { headerName: "Business Partner", field: "bp", sortable: true, filter: true ,flex :1,tooltipField: "bp"},
+    { headerName: "Approved By", field: "approvedBy", sortable: true, filter: true ,flex :1,tooltipField:"approvedBy"},
     { headerName: "Due Date", field: "dueDate", sortable: true, filter: "agDateColumnFilter",flex :1 },
 
 
-    // { headerName: "Assigned To", field: "assignedTo", sortable: true, filter: true },
     {
       headerName: "Actions", 
       field: "actions", 
@@ -134,7 +118,6 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
     
   ];
   
-  // gridOptions.api.sizeColumnsToFit();
 
   
 
@@ -148,12 +131,8 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
           rowData={tasks}
           columnDefs={columnDefs}
           pagination={true}
-          // paginationPageSize={pageSize}
-          // paginationPageSizeSelector={true}
-          paginationPageSizeSelector={[10,20, 50, 100]}
-          // suppressPaginationPanel={true} 
-          domLayout="autoHeight"
-          // suppressAutoSize={true}
+          paginationPageSizeSelector={[10,20, 50, 100]} 
+          domLayout="normal"
         />
       </div>
 

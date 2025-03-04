@@ -13,7 +13,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
     taskName: "",
     taskDescription: "",
     status: "Not Started",
-    dateCreated: moment().format("YYYY-MM-DD"), // Set current date by default
+    dateCreated: moment().format("YYYY-MM-DD"),
     bp: "",
     clientName : "",
     devHours: 0,
@@ -35,9 +35,6 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
       });
       form.setFieldsValue
       ({
-        // ...editingTask,
-        // dueDate: editingTask.dueDate ? moment(editingTask.dueDate) : null, 
-      // releaseDate: editingTask.releaseDate ? moment(editingTask.releaseDate) : null,
        taskName:editingTask.taskName,
        approvedBy:editingTask.approvedBy,
       dateCreated: editingTask.dateCreated ? moment(editingTask.dateCreated):null
@@ -81,7 +78,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
 
 
   const handleSubmit = () => {
-    onFormSubmit({ ...details,releaseDate: details.releaseDate ? details.releaseDate.format("YYYY-MM-DD") : null ,dueDate: details.dueDate ? details.dueDate.format("YYYY-MM-DD") : null});
+    onFormSubmit({ ...details,dateCreated: details.dateCreated ? moment(details.dateCreated).format("YYYY-MM-DD") : null,releaseDate: details.releaseDate ? details.releaseDate.format("YYYY-MM-DD") : null ,dueDate: details.dueDate ? details.dueDate.format("YYYY-MM-DD") : null});
   };
 
   return (
