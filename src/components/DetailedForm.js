@@ -1,6 +1,6 @@
 import { Form, Input, Select, DatePicker, InputNumber, Radio, Button, Row , Col } from "antd";
 import { useEffect, useState } from "react";
-import moment from "moment";
+import dayjs from "dayjs";
 import TextArea from "antd/es/input/TextArea";
 
 const { Option } = Select;
@@ -13,7 +13,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
     taskName: "",
     taskDescription: "",
     status: "Not Started",
-    dateCreated: moment().format("YYYY-MM-DD"),
+    dateCreated: dayjs().format("YYYY-MM-DD"),
     bp: "",
     clientName : "",
     devHours: 0,
@@ -29,22 +29,22 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
     if (editingTask!=null) {
       setDetails({
         ...editingTask,
-        dueDate: editingTask.dueDate ? moment(editingTask.dueDate) : null, 
-      releaseDate: editingTask.releaseDate ? moment(editingTask.releaseDate) : null,
-      dateCreated: editingTask.dateCreated ? moment(editingTask.dateCreated):null
+        dueDate: editingTask.dueDate ? dayjs(editingTask.dueDate) : null, 
+      releaseDate: editingTask.releaseDate ? dayjs(editingTask.releaseDate) : null,
+      dateCreated: editingTask.dateCreated ? dayjs(editingTask.dateCreated):null
       });
       form.setFieldsValue
       ({
        taskName:editingTask.taskName,
        approvedBy:editingTask.approvedBy,
-      dateCreated: editingTask.dateCreated ? moment(editingTask.dateCreated):null
+      dateCreated: editingTask.dateCreated ? dayjs(editingTask.dateCreated):null
       }); 
     }else {
       setDetails({
         taskName: "",
         taskDescription: "",
         status: "Not Started",
-        dateCreated: moment().format("YYYY-MM-DD"),
+        dateCreated: dayjs().format("YYYY-MM-DD"),
         bp: "",
         clientName : "",
         devHours: 0,
@@ -78,7 +78,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
 
 
   const handleSubmit = () => {
-    onFormSubmit({ ...details,dateCreated: details.dateCreated ? moment(details.dateCreated).format("YYYY-MM-DD") : null,releaseDate: details.releaseDate ? details.releaseDate.format("YYYY-MM-DD") : null ,dueDate: details.dueDate ? details.dueDate.format("YYYY-MM-DD") : null});
+    onFormSubmit({ ...details,dateCreated: details.dateCreated ? dayjs(details.dateCreated).format("YYYY-MM-DD") : null,releaseDate: details.releaseDate ? details.releaseDate.format("YYYY-MM-DD") : null ,dueDate: details.dueDate ? details.dueDate.format("YYYY-MM-DD") : null});
   };
 
   return (
@@ -110,7 +110,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
           <Col span={12}>
           <Form.Item label="Created Date" name="dateCreated" rules={[{ required: true, message: 'Please input the created date' }]} labelCol={{ span: 9 }} wrapperCol={{ span: 15 }} labelAlign="left">
             <DatePicker
-              value={details.dateCreated ? moment(details.dateCreated) : null}
+              value={details.dateCreated ? dayjs(details.dateCreated) : null}
               onChange={(date, dateString) => handleChange('dateCreated', dateString)}
               format="YYYY-MM-DD"
             />
