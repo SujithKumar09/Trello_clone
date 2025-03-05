@@ -1,6 +1,8 @@
+import React from 'react';
 import { Button, Popconfirm, Tag } from "antd";
 import { EditOutlined, DeleteOutlined, EyeOutlined} from "@ant-design/icons";
 import axios from "axios";
+import {FormData} from './Header';
 
 
 
@@ -16,6 +18,7 @@ import {
   DateFilterModule,
   PaginationModule,
   TooltipModule,
+  ColDef
 } from "ag-grid-community";
 
 
@@ -30,12 +33,17 @@ ModuleRegistry.registerModules([
   TooltipModule,
 ]);
 
+interface TaskListProps{
+  tasks : FormData[],
+  onEdit : (task : FormData)=>void,
+  fetchTasks : ()=>void,
+  onShowMore : (task : FormData)=> void,
+}
+
+function TaskList({ tasks, onEdit, fetchTasks, onShowMore} : TaskListProps) {
 
 
-function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
-
-
-  const handleDelete = async (taskId) => {
+  const handleDelete = async (taskId : number) => {
     if (!taskId) {
       console.error("Task ID is undefined, cannot delete.");
       alert("Error: Task ID is missing!");
@@ -46,13 +54,15 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
       fetchTasks();
       console.log("Task deleted Successfully!");
     } catch (error) {
-      console.error("Error deleting task:", error.response?.data || error.message);
-      alert("Failed to delete task!");
+      if(axios.isAxiosError(error)){
+        console.error("Error deleting task:", error.response?.data || error.message);
+        alert("Failed to delete task!");
+      }
     }
   };
 
 
-  const columnDefs = [
+  const columnDefs : ColDef[]= [
 
     { headerName: "Task Name", field: "taskName", sortable: true, filter: true,flex:2,tooltipField: "taskName", },
     {
@@ -60,7 +70,7 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
       field: "status",
       flex:1,
       sortable: true, filter: true,
-      cellRenderer: (params) => {
+      cellRenderer: (params : {value : string}) => {
         const status = params.value;
         let color;
         switch (status) {
@@ -92,7 +102,7 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
       headerName: "Actions", 
       field: "actions", 
       flex :1, 
-      cellRenderer: (params) => (
+      cellRenderer: (params : {data : FormData}) => (
         <>
           <Button 
             type="link" 
@@ -124,21 +134,15 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore}) {
 
 
   return (
- <div style={{ textAlign: "left", marginBottom: "10px" }}>
-
-      <div className="ag-theme-alpine" style={{ height: 500 , width: "96vw",margin:"auto"}}>
+      <div className="ag-theme-alpine" style={{textAlign: "left" ,height: 513 , width: "96vw",margin:"auto"}}>
         <AgGridReact
           rowData={tasks}
           columnDefs={columnDefs}
-          pagination={true}
+          pagination={true} 
           paginationPageSizeSelector={[10,20, 50, 100]} 
           domLayout="normal"
         />
       </div>
-
-
-
-    </div>
   );
 
 }

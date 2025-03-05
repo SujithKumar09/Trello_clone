@@ -1,19 +1,51 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { SearchOutlined } from "@ant-design/icons";
-import { Button, Row,Col, Input, Modal } from "antd";
+import { Button, Row ,Col, Input, Modal } from "antd";
 import DetailedForm from "./DetailedForm";
 import axios from "axios";
 import TaskList from "./TaskList"; 
 import "./Header.css";
-import DetailsCard from "./DetailsCard";
+import DetailsCard from './DetailsCard';
 
-const Header = () => {
-  const [isModalOpen, setisModalOpen] = useState(false);
-  const [tasks, setTasks] = useState([]); 
-  const [editingTask, setEditingTask] = useState(null); 
-  const [filteredTasks, setFilteredTasks] = useState([]); 
-  const [searchText, setSearchText] = useState("");
-  const [showMoreDetails, setShowMoreDetails] = useState(null);
+export interface FormData{
+  id: number,
+  taskName : string,
+  taskDescription : string,
+  dateCreated : string,
+  dueDate : string,
+  releaseDate : string,
+  status : string,
+  bp : string,
+  clientName : string,
+  isBillable : boolean,
+  devHours : number,
+  qaHours : number,
+  approvedBy : string,
+  assignedTo : string
+}
+
+const Header: React.FC  = () => {
+  const [isModalOpen, setisModalOpen] = useState<boolean>(false);
+  const [tasks, setTasks] = useState<FormData[]>([]); 
+  const [editingTask, setEditingTask] = useState<FormData | null>(null); 
+  const [filteredTasks, setFilteredTasks] = useState<FormData[]>([]); 
+  const [searchText, setSearchText] = useState<string>("");
+  const [showMoreDetails, setShowMoreDetails] = useState<FormData>({id:0,
+    taskName: "",
+    taskDescription: "",
+    status: "Not Started",
+    dateCreated: "",
+    bp: "",
+    clientName : "",
+    devHours: 0,
+    qaHours: 0,
+    approvedBy: "",
+    isBillable: false ,
+    dueDate: "",
+    assignedTo: "",
+    releaseDate: "",
+  });
 
   
   const fetchTasks = async () => {
@@ -21,7 +53,9 @@ const Header = () => {
       const response = await axios.get("http://localhost:8080/api/tasks");
       setTasks(response.data);
     } catch (error) {
-      console.error("Error fetching tasks:", error.response?.data || error.message);
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching tasks:", error.response?.data || error.message);
+      }
     }
   };
 
@@ -30,7 +64,7 @@ const Header = () => {
     fetchTasks();
   }, []);
 
-  const handleFormData = async (data) => {
+  const handleFormData = async (data : FormData) => {
     
     try {
       if (editingTask) {
@@ -50,8 +84,10 @@ const Header = () => {
       }
       fetchTasks(); 
     } catch (error) {
-      console.error("Error saving/updating task:", error.response?.data || error.message);
-      alert("Failed to save/update task!");
+      if(axios.isAxiosError(error)){
+        console.error("Error saving/updating task:", error.response?.data || error.message);
+        alert("Failed to save/update task!");
+      }
     }
 
     setisModalOpen(false);
@@ -66,15 +102,29 @@ const Header = () => {
   const handleCancel = () => {
     setisModalOpen(false);
     setEditingTask(null);
-    setShowMoreDetails(null);
+    setShowMoreDetails({id:0,
+      taskName: "",
+      taskDescription: "",
+      status: "Not Started",
+      dateCreated: "",
+      bp: "",
+      clientName : "",
+      devHours: 0,
+      qaHours: 0,
+      approvedBy: "",
+      isBillable: false ,
+      dueDate: "",
+      assignedTo: "",
+      releaseDate: "",
+    });
   };
 
-  const handleEdit = (task) => {
+  const handleEdit = (task : FormData) => {
     setEditingTask(task);
     setisModalOpen(true);
   };
 
-  const handleShowDetails = (task) => {
+  const handleShowDetails = (task : FormData) => {
     setShowMoreDetails(task);
   } 
 
@@ -95,7 +145,7 @@ const Header = () => {
     setFilteredTasks(filtered);
   }, [searchText, tasks]);
 
-  const handleSearch = (e) => {
+  const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 
@@ -115,7 +165,7 @@ const Header = () => {
         </Col>
       </Row>
       <Modal
-        title={editingTask ? "Edit Task" : "Add New Task"}
+        title={editingTask!==null ? "Edit Task" : "Add New Task"}
         open={isModalOpen}
         onCancel={handleCancel}
         footer={null}
@@ -127,7 +177,7 @@ const Header = () => {
 
       <Modal
         title="Task Details"
-        open={showMoreDetails!==null?true:false}
+        open={showMoreDetails.taskName!==""?true:false}
         onCancel={handleCancel}
         footer={null}
         width={"40%"}

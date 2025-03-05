@@ -1,6 +1,10 @@
+import React from 'react';
 import {Card, Row, Tag, Col} from "antd";
-
-const DetailsCard = ({ details }) => {
+import {FormData} from "./Header";
+interface CardData{
+    details : FormData ,
+}
+const DetailsCard : React.FC<CardData> = ({details}) => {
     let color;
     switch (details.status) {
         case "Completed":
@@ -47,8 +51,8 @@ const DetailsCard = ({ details }) => {
                 <Col span={12}><p><b>Is Billable:</b> {details.isBillable ? "Yes" : "No"}</p></Col>
             </Row>
             <Row>
-                <Col span={12}><p><b>Due Date:</b> {details.dueDate}</p></Col>
-                <Col span={12}><p><b>Release Date:</b> {details.releaseDate}</p></Col> 
+                <Col span={12}><p><b>Due Date:</b> {details.dueDate?details.dueDate:" -"}</p></Col>
+                <Col span={12}><p><b>Release Date:</b> {details.releaseDate?details.releaseDate:" -"}</p></Col> 
             </Row>
         </Card>
     );

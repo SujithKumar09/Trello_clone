@@ -1,19 +1,29 @@
-import { Form, Input, Select, DatePicker, InputNumber, Radio, Button, Row , Col } from "antd";
+import React from 'react';
+import { Form, Input, Select, InputNumber, Radio, Button, Row , Col } from "antd";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import TextArea from "antd/es/input/TextArea";
+import {FormData} from './Header';
+import MyDatePicker from './MyDatePicker'
 
-const { Option } = Select;
+interface DetailedFormProps{
+  onFormSubmit : (data : FormData)=>void,
+  editingTask : (FormData |null)
+}
 
-const DetailedForm = ({ onFormSubmit, editingTask }) => {
+const DetailedForm : React.FC<DetailedFormProps> = ({ onFormSubmit, editingTask}) => {
+  const dateFormat="YYYY-MM-DD";
+
+  const Option=Select.Option;
 
   const [form] = Form.useForm();
 
   const [details, setDetails] = useState({
+    id:0,
     taskName: "",
     taskDescription: "",
     status: "Not Started",
-    dateCreated: moment().format("YYYY-MM-DD"),
+    dateCreated: "",
     bp: "",
     clientName : "",
     devHours: 0,
@@ -29,9 +39,9 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
     if (editingTask!=null) {
       setDetails({
         ...editingTask,
-        dueDate: editingTask.dueDate ? moment(editingTask.dueDate) : null, 
-        releaseDate: editingTask.releaseDate ? moment(editingTask.releaseDate) : null,
-        dateCreated: editingTask.dateCreated ? moment(editingTask.dateCreated):null
+        dueDate: editingTask.dueDate ? moment(editingTask.dueDate).format(dateFormat) : "", 
+        releaseDate: editingTask.releaseDate ? moment(editingTask.releaseDate).format(dateFormat) : "",
+        dateCreated: editingTask.dateCreated ? moment(editingTask.dateCreated).format(dateFormat) : ""
       });
       form.setFieldsValue
       ({
@@ -41,19 +51,20 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
       }); 
     }else {
       setDetails({
+        id:0,
         taskName: "",
         taskDescription: "",
         status: "Not Started",
-        dateCreated: null,
+        dateCreated: "",
         bp: "",
         clientName : "",
         devHours: 0,
         qaHours: 0,
         approvedBy: "",
         isBillable: false,
-        dueDate: null,
+        dueDate: "",
         assignedTo: "",
-        releaseDate: null,
+        releaseDate: "",
       });
       form.setFieldsValue
       ({
@@ -66,7 +77,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
   }, [editingTask,onFormSubmit,form]);
 
  
-  const handleChange = (key, value) => {
+  const handleChange = (key : string, value:string|number|null) => {
   
     setDetails((prev) => ({
       ...prev,
@@ -78,7 +89,7 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
 
 
   const handleSubmit = () => {
-    onFormSubmit({ ...details,dateCreated: details.dateCreated ? moment(details.dateCreated).format("YYYY-MM-DD") : null,releaseDate: details.releaseDate ? details.releaseDate.format("YYYY-MM-DD") : null ,dueDate: details.dueDate ? details.dueDate.format("YYYY-MM-DD") : null});
+    onFormSubmit({ ...details,dateCreated : details.dateCreated ? moment(details.dateCreated).format(dateFormat) : "",releaseDate: details.releaseDate ? moment(details.releaseDate).format(dateFormat) : "" ,dueDate: details.dueDate ? moment(details.dueDate).format(dateFormat) : ""});
   };
 
   return (
@@ -109,10 +120,10 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
           </Col>
           <Col span={12}>
           <Form.Item label="Created Date" name="dateCreated" rules={[{ required: true, message: 'Please input the created date' }]} labelCol={{ span: 9 }} wrapperCol={{ span: 15 }} labelAlign="left">
-            <DatePicker
-              value={details.dateCreated ? moment(details.dateCreated) : null}
-              onChange={(date, dateString) => handleChange('dateCreated', dateString)}
-              format="YYYY-MM-DD"
+            <MyDatePicker
+              value={details.dateCreated ? moment(details.dateCreated) : ""}
+              onChange={(date) => handleChange('dateCreated', moment(date).format(dateFormat))}
+              format={dateFormat}
             />
           </Form.Item>
           </Col>
@@ -169,12 +180,12 @@ const DetailedForm = ({ onFormSubmit, editingTask }) => {
         </Col>
         <Col span={8}>
           <Form.Item label="Due Date">
-            <DatePicker value={details.dueDate} onChange={(date) => handleChange("dueDate", date)} />
+            <MyDatePicker value={details.dueDate!==""?moment(details.dueDate):null} onChange={(date) => handleChange("dueDate", moment(date).format(dateFormat))} />
           </Form.Item>
         </Col>
         <Col span={8}>
           <Form.Item label="Release Date">
-            <DatePicker value={details.releaseDate} onChange={(date) => handleChange("releaseDate", date)} />
+            <MyDatePicker value={details.releaseDate!==""?moment(details.releaseDate,dateFormat):null} onChange={(date) => handleChange("releaseDate", moment(date).format(dateFormat))} />
           </Form.Item>
         </Col>
       </Row>
