@@ -180,12 +180,16 @@ const DetailedForm : React.FC<DetailedFormProps> = ({ onFormSubmit, editingTask}
         </Col>
         <Col span={8}>
           <Form.Item label="Due Date">
-            <MyDatePicker value={details.dueDate!==""?moment(details.dueDate):null} onChange={(date) => handleChange("dueDate", moment(date).format(dateFormat))} />
+          <MyDatePicker
+              value={details.dueDate ? moment(details.dueDate) : ""}
+              onChange={(date) => handleChange('dueDate', date ? moment(date).format(dateFormat): "")}
+              format={dateFormat}
+            />
           </Form.Item>
         </Col>
         <Col span={8}>
           <Form.Item label="Release Date">
-            <MyDatePicker value={details.releaseDate!==""?moment(details.releaseDate,dateFormat):null} onChange={(date) => handleChange("releaseDate", moment(date).format(dateFormat))} />
+            <MyDatePicker value={details.releaseDate!==""?moment(details.releaseDate,dateFormat):null} onChange={(date) => handleChange("releaseDate",date ? moment(date).format(dateFormat):"")} />
           </Form.Item>
         </Col>
       </Row>
