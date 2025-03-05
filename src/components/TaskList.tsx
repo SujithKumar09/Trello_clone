@@ -3,6 +3,7 @@ import { Button, Popconfirm, Tag } from "antd";
 import { EditOutlined, DeleteOutlined, EyeOutlined} from "@ant-design/icons";
 import axios from "axios";
 import {FormData} from './Header';
+import "./Header.css"
 
 
 
@@ -134,7 +135,7 @@ function TaskList({ tasks, onEdit, fetchTasks, onShowMore} : TaskListProps) {
 
 
   return (
-      <div className="ag-theme-alpine" style={{textAlign: "left" ,height: 513 , width: "96vw",margin:"auto"}}>
+      <div className="ag-theme-alpine">
         <AgGridReact
           rowData={tasks}
           columnDefs={columnDefs}

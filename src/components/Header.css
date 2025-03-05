@@ -1,6 +1,19 @@
 .inputStyle {  
     width: 50%;
     height: 34px;
-    border-radius: 10;
+    border-radius: 10px;
     border: 1px solid rgb(10, 11, 12);
+}
+
+.rowStyle{
+    align-items:"center";
+    margin:1em 1em
+}
+
+
+.ag-theme-alpine{
+    text-align: "left" ;
+    height : 61vh;
+    width: 96vw;
+    margin: auto;
 }
